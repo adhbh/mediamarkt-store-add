@@ -1,6 +1,4 @@
-import { AntDesign } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from '@react-navigation/native';
 import {
   FlatList,
@@ -8,57 +6,66 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import { footerStyles, headingStyles, listStyles } from './styles';
 import COLORS from '../../utils/colors';
-import CustomTextInput from '../../shared/TextInput/index';
 import BottomSheet from '../../shared/BottomSheet/index';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../types/RootStackParamList';
+import { getItemsDetailsByIds } from '../../service/items/index';
+import { ItemType } from '../../types/Item';
 
-const data = [
-  {
-    id: 'FC13AE2238000168',
-    icon: <AntDesign name='laptop' style={listStyles.icon} />,
-    weight: '2kg',
-  },
-  {
-    id: 'FC13AE2238000169',
-    icon: <Feather name='smartphone' style={listStyles.icon} />,
-    weight: '2kg',
-  },
-  {
-    id: 'FC13AE2238000170',
-    icon: <AntDesign name='laptop' style={listStyles.icon} />,
-    weight: '2kg',
-  },
-  {
-    id: 'FC13AE2238000171',
-    icon: <Ionicons name='ios-watch' style={listStyles.icon} />,
-    weight: '2kg',
-  },
-  {
-    id: 'FC13AE2238000172',
-    icon: <Ionicons name='ios-watch' style={listStyles.icon} />,
-    weight: '2kg',
-  },
-];
 
-const Item = ({ id, icon, weight }: any) => (
+interface ItemTypeIconMap {
+  [type: string]: JSX.Element
+}
+const ItemTypeIconMap: ItemTypeIconMap = {
+  Phone: <Feather name='smartphone' style={listStyles.icon} />,
+  PC: <AntDesign name='laptop' style={listStyles.icon} />,
+  Smartwatch: <Ionicons name='ios-watch' style={listStyles.icon} />,
+  Television: <AntDesign name='laptop' style={listStyles.icon} />,
+
+}
+
+interface ItemPropType {
+  item: ItemType;
+  icon: JSX.Element;
+}
+const Item = ({ item, icon }: ItemPropType) => (
   <View style={listStyles.itemContainer}>
     <View style={listStyles.leftSection}>
       {icon}
       <View style={listStyles.contentContainer}>
-        <Text style={listStyles.title}>{id}</Text>
-        <Text style={listStyles.content}>{weight}</Text>
+        <Text style={listStyles.title}>{item.id}</Text>
+        <Text style={listStyles.content}>{item.weight}</Text>
       </View>
     </View>
   </View>
 );
 
-const CarrierParcelList = ({ title = 'SK16588798 Parcel List' }) => {
+type CarrierParcelListNavigationProp = StackScreenProps<
+  RootStackParamList,
+  'CarrierParcelList'
+  >;
+
+const CarrierParcelList = ({ route }: CarrierParcelListNavigationProp) => {
   const navigation = useNavigation();
+
+  const [items, setItems] = useState<ItemType[]>([])
+  
+  const { params } = route;
+  
+  const itemIds = params.parcel.items
+
+  useEffect(() => {
+    const getItemDetails = async () => {
+      const itemsDetails = getItemsDetailsByIds(itemIds)
+      setItems(itemsDetails)
+    }
+    getItemDetails();
+  }, [itemIds])
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -68,12 +75,12 @@ const CarrierParcelList = ({ title = 'SK16588798 Parcel List' }) => {
         <Pressable onPress={() => navigation.goBack()}>
           <AntDesign name='arrowleft' size={24} color='black' />
         </Pressable>
-        <Text style={headingStyles.title}>{title}</Text>
+        <Text style={headingStyles.title}>{params.title}</Text>
       </View>
       <FlatList
-        data={data}
+        data={items}
         renderItem={({ item }) => (
-          <Item id={item.id} icon={item.icon} weight={item.weight} />
+          <Item item={item} icon={ItemTypeIconMap[item.type]} />
         )}
         keyExtractor={(item) => item.id}
         ItemSeparatorComponent={() => (
@@ -120,11 +127,11 @@ const CarrierParcelList = ({ title = 'SK16588798 Parcel List' }) => {
         }}
       >
         <>
-          <CustomTextInput
-            placeholder={"Driver's Name"}
-            containerStyles={{ marginBottom: 10 }}
-          />
-          <CustomTextInput placeholder={'License Plate'} />
+          {/*<CustomTextInput*/}
+          {/*  placeholder={"Driver's Name"}*/}
+          {/*  containerStyles={{ marginBottom: 10 }}*/}
+          {/*/>*/}
+          {/*<CustomTextInput placeholder={'License Plate'} />*/}
         </>
       </BottomSheet>
     </SafeAreaView>

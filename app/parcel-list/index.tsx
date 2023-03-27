@@ -17,21 +17,19 @@ import { useEffect, useState } from 'react';
 import { ParcelType } from '../../types/ParcelList';
 
 interface ItemProps {
-  title: string;
-  courierName: string;
-  count: number;
-  onPressButton: () => void;
+  parcel: ParcelType;
+  onPressButton: (parcel: ParcelType) => void;
 }
 
-const Item = ({ title, courierName, count, onPressButton }: ItemProps) => (
+const Item = ({ parcel, onPressButton }: ItemProps) => (
   <View style={listStyles.itemContainer}>
-    <Pressable onPress={onPressButton}>
+    <Pressable onPress={() => onPressButton(parcel)}>
       <View style={listStyles.leftSection}>
         <FontAwesome5 name='truck' style={listStyles.icon} />
         <View style={listStyles.contentContainer}>
-          <Text style={listStyles.title}>{title}</Text>
-          <Text style={listStyles.content}>{courierName}</Text>
-          <Text style={listStyles.content}>{count} items to be picked up</Text>
+          <Text style={listStyles.title}>{parcel.id}</Text>
+          <Text style={listStyles.content}>{parcel.carrierId}</Text>
+          <Text style={listStyles.content}>{parcel.items.length} items to be picked up</Text>
         </View>
       </View>
     </Pressable>
@@ -54,20 +52,23 @@ const ParcelList = ({
 
   const { params } = route;
 
-  const onDeliveryButtonPress = () => {
-    navigationProp.navigate('CarrierParcelList');
+  const onItemPress = (parcel: ParcelType) => {
+    navigationProp.navigate('CarrierParcelList', {
+      title: parcel.id,
+      parcel: parcel
+    });
   };
 
   useEffect(() => {
     const getItemDetails = async () => {
-      const parcelListData = params.item;
+      const parcelListData = params.parcelList;
 
       const parcels = parcelListData.parcels;
 
       setParcels(parcels);
     };
     getItemDetails();
-  }, [params.item]);
+  }, [params.parcelList]);
 
   const getTotalItems = () => {
     return parcels.reduce((memo, parcel) => {
@@ -93,10 +94,8 @@ const ParcelList = ({
         data={parcels}
         renderItem={({ item: parcel }) => (
           <Item
-            title={parcel.id}
-            courierName={parcel.carrierId ? parcel.carrierId : ''}
-            count={parcel.itemsCount}
-            onPressButton={onDeliveryButtonPress}
+            parcel={parcel}
+            onPressButton={onItemPress}
           />
         )}
         ItemSeparatorComponent={() => (

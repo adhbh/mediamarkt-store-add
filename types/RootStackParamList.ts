@@ -1,8 +1,8 @@
-import { ParcelListType } from './ParcelList';
+import { ParcelListType, ParcelType } from './ParcelList';
 
 export type RootStackParamList = {
   ParcelLists: undefined;
-  ParcelList: { title: string, item: ParcelListType };
+  ParcelList: { title: string, parcelList: ParcelListType };
   Scanner: undefined;
-  CarrierParcelList: undefined;
+  CarrierParcelList: { title: string, parcel: ParcelType };
 };

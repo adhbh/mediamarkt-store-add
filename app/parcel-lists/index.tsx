@@ -137,10 +137,10 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
     getDefaultData();
   }, []);
 
-  const onItemPressed = (item: ParcelListType) => {
+  const onItemPressed = (parcelList: ParcelListType) => {
     navigation.navigate('ParcelList', {
-      title: `Parcel List ${item.pickupDate}`,
-      item
+      title: `Parcel List ${parcelList.pickupDate}`,
+      parcelList,
     });
   };
 
