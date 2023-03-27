@@ -2,7 +2,15 @@ import { AntDesign } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { FlatList, Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  FlatList,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { footerStyles, headingStyles, listStyles } from './styles';
 import COLORS from '../../utils/colors';
 import CustomTextInput from '../../shared/TextInput/index';
@@ -53,7 +61,7 @@ const CarrierParcelList = ({ title = 'SK16588798 Parcel List' }) => {
   const navigation = useNavigation();
 
   const [modalVisible, setModalVisible] = useState(false);
-  
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={headingStyles.container}>
@@ -82,12 +90,17 @@ const CarrierParcelList = ({ title = 'SK16588798 Parcel List' }) => {
       />
 
       <View
-        style={{ height: 100, justifyContent: 'center', alignItems: 'center',     marginLeft: 20,
-          marginRight: 20 }}
+        style={{
+          height: 100,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginLeft: 20,
+          marginRight: 20,
+        }}
       >
         <Pressable
           onPress={() => {
-            setModalVisible(true)
+            setModalVisible(true);
           }}
           style={footerStyles.buttonContainer}
         >
@@ -107,7 +120,10 @@ const CarrierParcelList = ({ title = 'SK16588798 Parcel List' }) => {
         }}
       >
         <>
-          <CustomTextInput placeholder={'Driver\'s Name'} containerStyles={{ marginBottom: 10 }}/>
+          <CustomTextInput
+            placeholder={"Driver's Name"}
+            containerStyles={{ marginBottom: 10 }}
+          />
           <CustomTextInput placeholder={'License Plate'} />
         </>
       </BottomSheet>

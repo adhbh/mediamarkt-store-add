@@ -1,13 +1,23 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, StyleSheet, TextInput, Animated, Pressable, ViewStyle } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TextInput,
+  Animated,
+  Pressable,
+  ViewStyle,
+} from 'react-native';
 import COLORS from '../../utils/colors';
 
 interface CustomTextInputPropTypes {
   containerStyles?: ViewStyle;
   placeholder: string;
+  value: string;
+  onChangeValue: (value: string) => void;
 }
 const CustomTextInput = (props: CustomTextInputPropTypes) => {
-  const [value, setValue] = useState('');
+  const { value, onChangeValue, placeholder } = props;
+
   const moveText = useRef(new Animated.Value(0)).current;
 
   const refInput = React.useRef<TextInput>(null);
@@ -21,7 +31,7 @@ const CustomTextInput = (props: CustomTextInputPropTypes) => {
   }, [value]);
 
   const onChangeText = (text: string) => {
-    setValue(text);
+    onChangeValue(text);
   };
 
   const onFocusHandler = () => {
@@ -66,7 +76,7 @@ const CustomTextInput = (props: CustomTextInputPropTypes) => {
   };
 
   return (
-    <View style={[styles.container, props.containerStyles ]}>
+    <View style={[styles.container, props.containerStyles]}>
       <TextInput
         autoCapitalize={'none'}
         style={styles.input}
@@ -79,20 +89,17 @@ const CustomTextInput = (props: CustomTextInputPropTypes) => {
         ref={refInput}
       />
 
-        <Animated.View style={[styles.animatedStyle, animStyle]}>
-          <Pressable onPress={() => {
-            if(refInput.current) {
-              refInput.current.focus()
+      <Animated.View style={[styles.animatedStyle, animStyle]}>
+        <Pressable
+          onPress={() => {
+            if (refInput.current) {
+              refInput.current.focus();
             }
-          }}>
-          <Animated.Text
-            style={[styles.label]}
-          >
-            {props.placeholder}
-          </Animated.Text>
-          </Pressable>
-        </Animated.View>
-
+          }}
+        >
+          <Animated.Text style={[styles.label]}>{placeholder}</Animated.Text>
+        </Pressable>
+      </Animated.View>
     </View>
   );
 };

@@ -5,7 +5,8 @@ export interface ParcelType {
   deliveryData: string;
   deliveryAddress: string;
   pickupAddress: string;
-  itemsCount: string;
+  itemsCount: number;
+  carrierId?: string;
 }
 
 export interface ParcelListType {

@@ -1,7 +1,14 @@
 import { FontAwesome5 } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import {FlatList, Pressable, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {
+  FlatList,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { headingStyles, listStyles } from './styles';
 import COLORS from '../../utils/colors';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -14,8 +21,8 @@ const data = [
   { parcelTitle: '641DB7B2FC16 Parcel List', courierName: 'UPA', count: 2 },
 ];
 
-interface ItemProps  {
-    title: string;
+interface ItemProps {
+  title: string;
   courierName: string;
   count: number;
   onPressButton: () => void;
@@ -23,46 +30,47 @@ interface ItemProps  {
 
 const Item = ({ title, courierName, count, onPressButton }: ItemProps) => (
   <View style={listStyles.itemContainer}>
-  <Pressable onPress={onPressButton}>
-    <View style={listStyles.leftSection}>
-      <FontAwesome5 name='truck' style={listStyles.icon} />
-      <View style={listStyles.contentContainer}>
-        <Text style={listStyles.title}>{title}</Text>
-        <Text style={listStyles.content}>{courierName}</Text>
-        <Text style={listStyles.content}>{count} items to be picked up</Text>
+    <Pressable onPress={onPressButton}>
+      <View style={listStyles.leftSection}>
+        <FontAwesome5 name='truck' style={listStyles.icon} />
+        <View style={listStyles.contentContainer}>
+          <Text style={listStyles.title}>{title}</Text>
+          <Text style={listStyles.content}>{courierName}</Text>
+          <Text style={listStyles.content}>{count} items to be picked up</Text>
+        </View>
       </View>
-    </View>
-  </Pressable>
-      <Text style={listStyles.rightSection}>DELIVERY</Text>
-
+    </Pressable>
+    <Text style={listStyles.rightSection}>DELIVERY</Text>
   </View>
 );
 
 type ParcelListNavigationProp = StackScreenProps<
   RootStackParamList,
   'ParcelList'
-  >;
+>;
 
-const ParcelList = ({ route, navigation: navigationProp }: ParcelListNavigationProp) => {
+const ParcelList = ({
+  route,
+  navigation: navigationProp,
+}: ParcelListNavigationProp) => {
   const navigation = useNavigation();
 
-
   const onDeliveryButtonPress = () => {
-    navigationProp.navigate('CarrierParcelList')
-  }
+    navigationProp.navigate('CarrierParcelList');
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={headingStyles.container}>
         <Pressable onPress={() => navigation.goBack()}>
           <AntDesign name='arrowleft' size={24} color='black' />
         </Pressable>
-          <Text style={headingStyles.title}>{route.params.title}</Text>
+        <Text style={headingStyles.title}>{route.params.title}</Text>
       </View>
       <Text style={headingStyles.subTitle}>14 items to be picked up</Text>
       <FlatList
         style={{
           marginLeft: 20,
-          marginRight: 20
+          marginRight: 20,
         }}
         data={data}
         renderItem={({ item }) => (
@@ -74,15 +82,15 @@ const ParcelList = ({ route, navigation: navigationProp }: ParcelListNavigationP
           />
         )}
         ItemSeparatorComponent={() => (
-            <View
-                style={{
-                    borderBottomWidth: 1,
-                    borderBottomColor: COLORS.lightGrey,
-                    paddingBottom: 10,
-                    marginTop: 6,
-                    marginBottom: 6,
-                }}
-            />
+          <View
+            style={{
+              borderBottomWidth: 1,
+              borderBottomColor: COLORS.lightGrey,
+              paddingBottom: 10,
+              marginTop: 6,
+              marginBottom: 6,
+            }}
+          />
         )}
         keyExtractor={(item) => item.parcelTitle}
       />
@@ -91,10 +99,10 @@ const ParcelList = ({ route, navigation: navigationProp }: ParcelListNavigationP
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
 });
 
 export default ParcelList;

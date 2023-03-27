@@ -22,32 +22,32 @@ interface CustomSelectorPropTypes {
   placeholder: string;
   options: SelectionOption[];
   onSelectItem: (item: SelectionOption) => void;
+  selectedId: string;
 }
 
 const CustomSelector = (props: CustomSelectorPropTypes) => {
-  const { placeholder, options, onSelectItem } = props;
+  const { placeholder, options, onSelectItem, selectedId } = props;
 
-  const [selectedItem, setSelectedItem] = useState<SelectionOption>();
   const [showSelectionModal, setShowSelectionModal] = useState<boolean>(false);
 
   const moveText = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (selectedItem) {
+    if (selectedId) {
       moveTextTop();
-    } else if (!selectedItem) {
+    } else if (!selectedId) {
       moveTextBottom();
     }
-  }, [selectedItem]);
+  }, [selectedId]);
 
   const onFocusHandler = () => {
-    if (selectedItem) {
+    if (selectedId) {
       moveTextTop();
     }
   };
 
   const onBlurHandler = () => {
-    if (!selectedItem) {
+    if (!selectedId) {
       moveTextBottom();
     }
   };
@@ -90,10 +90,11 @@ const CustomSelector = (props: CustomSelectorPropTypes) => {
   };
 
   const handleSelectItem = (item: SelectionOption) => () => {
-    setSelectedItem(item)
-    onSelectItem(item)
-    setShowSelectionModal(false)
-  }
+    onSelectItem(item);
+    setShowSelectionModal(false);
+  };
+
+  const selectedItem = options.find((item) => item.id === selectedId);
 
   return (
     <View style={styles.container}>
@@ -105,7 +106,7 @@ const CustomSelector = (props: CustomSelectorPropTypes) => {
           <TextInput
             autoCapitalize={'none'}
             style={styles.input}
-            value={selectedItem?.value}
+            value={selectedItem ? selectedItem.value : ''}
             editable={true}
             onFocus={onFocusHandler}
             onBlur={onBlurHandler}

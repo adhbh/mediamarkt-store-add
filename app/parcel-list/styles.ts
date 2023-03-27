@@ -7,7 +7,7 @@ export const headingStyles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 48,
     marginLeft: 20,
-    marginRight: 20
+    marginRight: 20,
   },
   title: {
     fontSize: 24,
@@ -21,7 +21,7 @@ export const headingStyles = StyleSheet.create({
     color: COLORS.darkGrey,
     marginTop: 11,
     marginLeft: 20,
-    marginRight: 20
+    marginRight: 20,
   },
 });
 

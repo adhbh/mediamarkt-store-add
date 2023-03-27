@@ -7,7 +7,7 @@ export const headingStyles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 48,
     marginLeft: 20,
-    marginRight: 20
+    marginRight: 20,
   },
   title: {
     fontSize: 24,
@@ -24,7 +24,8 @@ export const listStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginLeft: 20, marginRight: 20
+    marginLeft: 20,
+    marginRight: 20,
   },
   leftSection: { flexDirection: 'row', alignItems: 'center' },
   contentContainer: { justifyContent: 'space-evenly', margin: 15 },

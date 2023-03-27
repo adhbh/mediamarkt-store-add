@@ -14,10 +14,10 @@ import CustomTextInput from '../../shared/TextInput';
 import BottomSheet from '../../shared/BottomSheet';
 import { RootStackParamList } from '../../types/RootStackParamList';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { getParcelListsData } from '../../storage/ParcelListStorage';
 import CustomSelector from '../../shared/Selector/index';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { ParcelListType, ParcelType } from '../../types/ParcelList';
+import { ParcelListType } from '../../types/ParcelList';
+import { getParcelListsData } from '../../storage/ParcelsStorage/index';
 
 const COURIER_DATA = [
   {
@@ -106,18 +106,33 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
   const [parcelLists, setParcelLists] = useState<ParcelListType[]>([]);
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [parcelId, setParcelId] = useState<string>('');
+  const [carrierId, setCarrierId] = useState<string>('');
 
   useEffect(() => {
     const getDefaultData = async () => {
-      const defaultData = await getParcelListsData();
-      if (defaultData) {
-        setParcelLists(defaultData);
+      const defaultParcelsData = await getParcelListsData();
+      if (defaultParcelsData) {
+        const uniquePickupDates = [
+          ...new Set(defaultParcelsData.map((item) => item.pickupDate)),
+        ];
+        const parcelListData = uniquePickupDates.map((pickupDate) => {
+          return {
+            pickupDate,
+            parcels: defaultParcelsData.filter(
+              (parcel) => parcel.pickupDate === pickupDate
+            ),
+          };
+        });
+        setParcelLists(parcelListData);
       }
     };
     getDefaultData();
   }, []);
 
-  const onItemPressed = (item : ParcelListType) => {
+  console.log(parcelLists);
+
+  const onItemPressed = (item: ParcelListType) => {
     navigation.navigate('ParcelList', {
       title: `Parcel List ${item.pickupDate}`,
     });
@@ -125,6 +140,10 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
 
   const onScannerPressed = () => {
     navigation.navigate('Scanner');
+  };
+
+  const onAddNewParcel = async () => {
+    const parcelData = getParcelsById(parcelId);
   };
 
   const data = COURIER_DATA.map((item) => ({
@@ -195,7 +214,7 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
           onPress={onScannerPressed}
         >
           <MaterialCommunityIcons
-            name="barcode-scan"
+            name='barcode-scan'
             size={40}
             color={COLORS.red}
           />
@@ -216,13 +235,16 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
           <CustomTextInput
             placeholder={'ID'}
             containerStyles={{ marginBottom: 10 }}
+            value={parcelId}
+            onChangeValue={setParcelId}
           />
           <CustomSelector
             placeholder={'Carrier ID'}
             options={data}
             onSelectItem={(item) => {
-              console.log(item.value);
+              setCarrierId(item.id);
             }}
+            selectedId={carrierId}
           />
         </>
       </BottomSheet>
