@@ -23,8 +23,12 @@ import {
 import { DeliveryStatus } from '../../types/ParcelList';
 import ListDivider from '../../shared/ListDivider/index';
 import COLORS from '../../utils/colors';
-import { parcelsDataToParcelLists } from '../../utils/dataTranform';
+import {
+  findCarrierFromDriverNameAndLicencePlate,
+  parcelsDataToParcelLists,
+} from '../../utils/dataTranform';
 import Alert from '../../shared/Alert/index';
+import { useCarriersState } from '../../contexts/CarriersContext';
 
 interface ItemTypeIconMap {
   [type: string]: JSX.Element;
@@ -75,6 +79,8 @@ const CarrierParcelList = ({
 
   const itemIds = params.parcel.items;
 
+  const carriers = useCarriersState();
+
   useEffect(() => {
     const getItemDetails = async () => {
       const itemsDetails = getItemsDetailsByIds(itemIds);
@@ -86,16 +92,25 @@ const CarrierParcelList = ({
   const [modalVisible, setModalVisible] = useState(false);
 
   const updateDeliveryStatus = async () => {
-    const updatedParcel = await updateParcelById(params.parcel.id, {
-      ...params.parcel,
-      deliveryInfo: {
-        driverName,
-        licenseNumber,
-        status: DeliveryStatus.DELIVERED,
-      },
-    });
-    if (updatedParcel) {
-      setDelivered(true);
+    const carrier = findCarrierFromDriverNameAndLicencePlate(
+      carriers,
+      driverName,
+      licenseNumber
+    );
+
+    if (carrier) {
+      const updatedParcel = await updateParcelById(params.parcel.id, {
+        ...params.parcel,
+        deliveryInfo: {
+          carrierId: carrier.id,
+          status: DeliveryStatus.DELIVERED,
+        },
+      });
+      if (updatedParcel) {
+        setDelivered(true);
+      } else {
+        setDeliveryError(true);
+      }
     } else {
       setDeliveryError(true);
     }
@@ -211,9 +226,9 @@ const CarrierParcelList = ({
         }}
         buttonText={'BACK'}
         onButtonPress={() => {
-          navigation.goBack();
+          setDeliveryError(false);
         }}
-        description={'Parcel successfully delivered to carrier'}
+        description={'Some information is wrong'}
       />
     </SafeAreaView>
   );

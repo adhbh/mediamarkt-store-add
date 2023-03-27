@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react';
 import { DeliveryStatus, ParcelType } from '../../types/ParcelList';
 import ListDivider from '../../shared/ListDivider/index';
 import { useCarriersState } from '../../contexts/CarriersContext';
+import { findCarrierById } from '../../utils/dataTranform';
 
 interface ItemProps {
   parcel: ParcelType;
@@ -23,8 +24,9 @@ interface ItemProps {
 
 const Item = ({ parcel, onPressButton }: ItemProps) => {
   const carriers = useCarriersState();
-  const carrierDetails = carriers.find(
-    (carrier) => carrier.id === parcel.carrierId
+  const carrierDetails = findCarrierById(
+    carriers,
+    parcel.deliveryInfo.carrierId
   );
 
   return (
@@ -37,7 +39,7 @@ const Item = ({ parcel, onPressButton }: ItemProps) => {
             <Text style={listStyles.content}>
               {carrierDetails
                 ? `${carrierDetails.companyName} (${carrierDetails.id})`
-                : parcel.carrierId}
+                : parcel.deliveryInfo.carrierId}
             </Text>
             <Text style={listStyles.content}>
               {parcel.items.length} items to be picked up

@@ -20,14 +20,14 @@ export const addToParcelsData = async (
   const stringifiedData = await AsyncStorage.getItem('@parcelsData');
 
   if (stringifiedData) {
-    const existingData = JSON.parse(stringifiedData);
+    const existingData: ParcelType[] = JSON.parse(stringifiedData);
 
     const newParcelsData: ParcelType[] = [
       ...existingData,
       {
         ...parcel,
-        carrierId,
         deliveryInfo: {
+          carrierId,
           status: DeliveryStatus.PENDING,
         },
       },

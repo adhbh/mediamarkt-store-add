@@ -4,8 +4,7 @@ export enum DeliveryStatus {
 }
 
 export interface ParcelDeliveryType {
-  driverName?: string;
-  licenseNumber?: string;
+  carrierId: string;
   status: DeliveryStatus;
 }
 
@@ -18,7 +17,6 @@ export interface ParcelType {
   pickupAddress: string;
   itemsCount: number;
   deliveryInfo: ParcelDeliveryType;
-  carrierId: string;
 }
 
 export interface ParcelListType {

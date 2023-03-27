@@ -1,4 +1,5 @@
 import { ParcelType } from '../types/ParcelList';
+import { Carrier } from '../types/Carrier';
 
 export const parcelsDataToParcelLists = (parcelsData: ParcelType[]) => {
   const uniquePickupDates = [
@@ -12,4 +13,19 @@ export const parcelsDataToParcelLists = (parcelsData: ParcelType[]) => {
   });
 
   return parcelListData;
+};
+
+export const findCarrierById = (carriers: Carrier[], carrierId: string) => {
+  return carriers.find((carrier) => carrier.id === carrierId);
+};
+
+export const findCarrierFromDriverNameAndLicencePlate = (
+  carriers: Carrier[],
+  driversName: string,
+  licensePlate: string
+) => {
+  return carriers.find(
+    (carrier) =>
+      carrier.driver === driversName && carrier.licensePlate === licensePlate
+  );
 };

@@ -1,10 +1,6 @@
 import { DeliveryStatus, ParcelType } from '../../types/ParcelList';
 import { ParcelsData } from '../mocks/parcels';
 
-const getParcels = async () => {
-  return ParcelsData;
-};
-
 export const getParcelById = async (
   parcelId: string
 ): Promise<ParcelType | null> => {
@@ -22,9 +18,9 @@ export const getParcelById = async (
       itemsCount: parcelDataFromService.itemsCount,
       items: parcelDataFromService.items.map((item) => item.$oid),
       deliveryInfo: {
+        carrierId: '',
         status: DeliveryStatus.PENDING,
       },
-      carrierId: '',
     };
   }
   return null;
