@@ -1,7 +1,7 @@
 import { DeliveryStatus, ParcelType } from '../../types/ParcelList';
 import { ParcelsData } from '../mocks/parcels';
 
-export const getParcelById = async (
+export const getParcelByIdApi = async (
   parcelId: string
 ): Promise<ParcelType | null> => {
   const parcelDataFromService = ParcelsData.find(

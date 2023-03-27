@@ -9,19 +9,20 @@ import {
 } from 'react-native';
 import PickupListItem from './components/PickupListItem';
 import COLORS from '../../utils/colors';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CustomTextInput from '../../shared/TextInput';
 import BottomSheet from '../../shared/BottomSheet';
 import { RootStackParamList } from '../../types/RootStackParamList';
 import { StackScreenProps } from '@react-navigation/stack';
 import CustomSelector from '../../shared/Selector/index';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ParcelListType, ParcelType } from '../../types/ParcelList';
 import {
   addToParcelsData,
+  getParcelById,
   getParcelsData,
 } from '../../storage/ParcelsStorage/index';
-import { getParcelById } from '../../service/parcels/index';
+import { getParcelByIdApi } from '../../service/parcels/index';
 import { useIsFocused } from '@react-navigation/native';
 import ListDivider from '../../shared/ListDivider/index';
 import { parcelsDataToParcelLists } from '../../utils/dataTranform';
@@ -33,6 +34,7 @@ import {
 } from '../../contexts/CarriersContext';
 import { FONT_SIZE, FONT_WEIGHT } from '../../utils/fonts';
 import { SPACINGS } from '../../utils/spacings';
+import Alert from '../../shared/Alert/index';
 
 type ParcelListsPropTypes = StackScreenProps<RootStackParamList, 'ParcelLists'>;
 
@@ -48,8 +50,9 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
   const [parcelId, setParcelId] = useState<string>('');
   const [carrierId, setCarrierId] = useState<string>('');
 
-  const dispatchCarriers = useCarriersDispatch();
+  const [addParcelError, setAddParcelError] = useState<string | null>(null);
 
+  const dispatchCarriers = useCarriersDispatch();
   const carriers = useCarriersState();
 
   // Refetch parcels from storage when this screen is focused
@@ -89,7 +92,16 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
 
   // Callback when user adds a new parcel, add parcel to storage
   const onAddNewParcel = async () => {
-    const parcelData = await getParcelById(parcelId);
+    setCarrierId('');
+    setParcelId('');
+    const parcelFromStorage = await getParcelById(parcelId);
+    if (parcelFromStorage !== null) {
+      setModalVisible(false);
+      setAddParcelError('Parcel has been already added to the list');
+      return;
+    }
+
+    const parcelData = await getParcelByIdApi(parcelId);
 
     if (parcelData !== null) {
       const updatedParcelsData = await addToParcelsData(parcelData, carrierId);
@@ -97,7 +109,11 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
         const updatedParcelLists = parcelsDataToParcelLists(updatedParcelsData);
         setParcelLists(updatedParcelLists);
       }
+    } else {
+      setAddParcelError("Parcel ID not found. Can't add it to the list.");
     }
+    setCarrierId('');
+    setParcelId('');
     setModalVisible(false);
   };
 
@@ -160,6 +176,8 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
       <BottomSheet
         open={modalVisible}
         onRequestClose={() => {
+          setCarrierId('');
+          setParcelId('');
           setModalVisible(false);
         }}
         title={'Parcel and carrier information'}
@@ -185,6 +203,19 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
           />
         </>
       </BottomSheet>
+
+      <Alert
+        icon={<AntDesign name='warning' style={styles.icon} />}
+        open={!!addParcelError}
+        onRequestClose={() => {
+          setAddParcelError(null);
+        }}
+        buttonText={'BACK'}
+        onButtonPress={() => {
+          setAddParcelError(null);
+        }}
+        description={addParcelError ? addParcelError : ''}
+      />
     </SafeAreaView>
   );
 }
@@ -209,5 +240,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
+  },
+  icon: {
+    fontSize: 48,
+    color: COLORS.red,
+    marginBottom: SPACINGS.large,
   },
 });
