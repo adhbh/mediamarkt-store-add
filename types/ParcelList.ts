@@ -2,7 +2,7 @@ export interface ParcelType {
   id: string;
   items: string[];
   pickupDate: string;
-  deliveryData: string;
+  deliveryDate: string;
   deliveryAddress: string;
   pickupAddress: string;
   itemsCount: number;

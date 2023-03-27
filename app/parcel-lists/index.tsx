@@ -16,8 +16,9 @@ import { RootStackParamList } from '../../types/RootStackParamList';
 import { StackNavigationProp } from '@react-navigation/stack';
 import CustomSelector from '../../shared/Selector/index';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { ParcelListType } from '../../types/ParcelList';
-import { getParcelListsData } from '../../storage/ParcelsStorage/index';
+import { ParcelListType, ParcelType } from '../../types/ParcelList';
+import { addToParcelsData, getParcelListsData } from '../../storage/ParcelsStorage/index';
+import { getParcelById } from '../../service/parcels/index';
 
 const COURIER_DATA = [
   {
@@ -109,28 +110,32 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
   const [parcelId, setParcelId] = useState<string>('');
   const [carrierId, setCarrierId] = useState<string>('');
 
+  const parcelsDataToParcelLists = (parcelsData: ParcelType[]) => {
+    const uniquePickupDates = [
+      ...new Set(parcelsData.map((item) => item.pickupDate)),
+    ];
+    const parcelListData = uniquePickupDates.map((pickupDate) => {
+      return {
+        pickupDate,
+        parcels: parcelsData.filter(
+          (parcel) => parcel.pickupDate === pickupDate
+        ),
+      };
+    });
+
+    return parcelListData
+  }
+
   useEffect(() => {
     const getDefaultData = async () => {
       const defaultParcelsData = await getParcelListsData();
       if (defaultParcelsData) {
-        const uniquePickupDates = [
-          ...new Set(defaultParcelsData.map((item) => item.pickupDate)),
-        ];
-        const parcelListData = uniquePickupDates.map((pickupDate) => {
-          return {
-            pickupDate,
-            parcels: defaultParcelsData.filter(
-              (parcel) => parcel.pickupDate === pickupDate
-            ),
-          };
-        });
+        const parcelListData = parcelsDataToParcelLists(defaultParcelsData)
         setParcelLists(parcelListData);
       }
     };
     getDefaultData();
   }, []);
-
-  console.log(parcelLists);
 
   const onItemPressed = (item: ParcelListType) => {
     navigation.navigate('ParcelList', {
@@ -143,7 +148,16 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
   };
 
   const onAddNewParcel = async () => {
-    const parcelData = getParcelsById(parcelId);
+    const parcelData = await getParcelById(parcelId);
+
+    if(parcelData !== null) {
+      const updatedParcelsData = await addToParcelsData(parcelData, carrierId)
+      if (updatedParcelsData) {
+        const updatedParcelLists = parcelsDataToParcelLists(updatedParcelsData)
+        setParcelLists(updatedParcelLists)
+      }
+    }
+    setModalVisible(false)
   };
 
   const data = COURIER_DATA.map((item) => ({
@@ -227,8 +241,8 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
         }}
         title={'Parcel and carrier information'}
         buttonTitle={'ADD'}
-        onButtonPress={() => {
-          setModalVisible(false);
+        onButtonPress={async () => {
+          await onAddNewParcel()
         }}
       >
         <>

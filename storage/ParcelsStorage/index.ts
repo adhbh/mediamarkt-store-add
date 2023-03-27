@@ -20,7 +20,21 @@ export const getParcelListsData = async (): Promise<ParcelType[] | null> => {
 export const addToParcelsData = async (
   parcel: ParcelType,
   carrierId: string
-): Promise<ParcelType[]> => {
+): Promise<ParcelType[] | null> => {
   const stringifiedData = await AsyncStorage.getItem('@parcelsData');
-  return [];
+
+  if (stringifiedData) {
+    const existingData = JSON.parse(stringifiedData);
+
+    const newParcelsData = [
+      ...existingData,
+      {
+        ...parcel,
+        carrierId,
+      },
+    ];
+
+    await AsyncStorage.setItem('@parcelsData', JSON.stringify(newParcelsData));
+  }
+  return getParcelListsData();
 };
