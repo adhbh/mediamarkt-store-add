@@ -1,4 +1,4 @@
-import { ParcelType } from '../../types/ParcelList';
+import { DeliveryStatus, ParcelType } from '../../types/ParcelList';
 import { ParcelsData } from '../mocks/parcels';
 
 const getParcels = async () => {
@@ -21,6 +21,10 @@ export const getParcelById = async (
       pickupDate: parcelDataFromService.pickupDate,
       itemsCount: parcelDataFromService.itemsCount,
       items: parcelDataFromService.items.map((item) => item.$oid),
+      deliveryInfo: {
+        status: DeliveryStatus.PENDING
+      },
+      carrierId: ''
     };
   }
   return null;

@@ -19,7 +19,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ParcelListType, ParcelType } from '../../types/ParcelList';
 import {
   addToParcelsData,
-  getParcelListsData,
+  getParcelsData
 } from '../../storage/ParcelsStorage/index';
 import { getParcelById } from '../../service/parcels/index';
 
@@ -131,7 +131,7 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
 
   useEffect(() => {
     const getDefaultData = async () => {
-      const defaultParcelsData = await getParcelListsData();
+      const defaultParcelsData = await getParcelsData();
       if (defaultParcelsData) {
         const parcelListData = parcelsDataToParcelLists(defaultParcelsData);
         setParcelLists(parcelListData);

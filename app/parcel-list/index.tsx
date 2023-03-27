@@ -87,7 +87,7 @@ const ParcelList = ({
     }, 0);
   };
   return (
-    
+
     <SafeAreaView style={styles.container}>
       <View style={headingStyles.container}>
         <Pressable onPress={() => navigation.goBack()}>

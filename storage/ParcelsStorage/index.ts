@@ -5,7 +5,7 @@ export const storeDefaultData = async () => {
   await AsyncStorage.setItem('@parcelsData', JSON.stringify([]));
 };
 
-export const getParcelListsData = async (): Promise<ParcelType[] | null> => {
+export const getParcelsData = async (): Promise<ParcelType[] | null> => {
   const stringifiedData = await AsyncStorage.getItem('@parcelsData');
   if (stringifiedData) {
     return JSON.parse(stringifiedData);
@@ -35,5 +35,25 @@ export const addToParcelsData = async (
 
     await AsyncStorage.setItem('@parcelsData', JSON.stringify(newParcelsData));
   }
-  return getParcelListsData();
+  return getParcelsData();
+};
+
+
+export const updateParcelById = async (
+  parcelId: string,
+  parcelData: ParcelType,
+): Promise<ParcelType[] | null> => {
+  const stringifiedData = await AsyncStorage.getItem('@parcelsData');
+
+  if (stringifiedData) {
+    const existingData: ParcelType[] = JSON.parse(stringifiedData);
+    const newParcelsData: ParcelType[] = existingData.map(parcel => {
+      if(parcel.id === parcelId) {
+        return parcelData
+      }
+      return parcel
+    });
+    await AsyncStorage.setItem('@parcelsData', JSON.stringify(newParcelsData));
+  }
+  return getParcelsData();
 };
