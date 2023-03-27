@@ -22,9 +22,9 @@ export const getParcelById = async (
       itemsCount: parcelDataFromService.itemsCount,
       items: parcelDataFromService.items.map((item) => item.$oid),
       deliveryInfo: {
-        status: DeliveryStatus.PENDING
+        status: DeliveryStatus.PENDING,
       },
-      carrierId: ''
+      carrierId: '',
     };
   }
   return null;

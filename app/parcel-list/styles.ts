@@ -49,6 +49,14 @@ export const listStyles = StyleSheet.create({
     fontWeight: '400',
     color: 'rgba(58, 53, 65, 0.87)',
   },
-  deliveryStatusDelivery: { color: COLORS.red, fontWeight: '500', fontSize: 10 },
-  deliveryStatusDelivered: { color: COLORS.lightGrey, fontWeight: '500', fontSize: 10 },
+  deliveryStatusDelivery: {
+    color: COLORS.red,
+    fontWeight: '500',
+    fontSize: 10,
+  },
+  deliveryStatusDelivered: {
+    color: COLORS.lightGrey,
+    fontWeight: '500',
+    fontSize: 10,
+  },
 });

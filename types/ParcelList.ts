@@ -1,6 +1,6 @@
 export enum DeliveryStatus {
   PENDING = 'PENDING',
-  DELIVERED = 'DELIVERED'
+  DELIVERED = 'DELIVERED',
 }
 
 export interface ParcelDeliveryType {

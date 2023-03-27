@@ -19,12 +19,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ParcelListType, ParcelType } from '../../types/ParcelList';
 import {
   addToParcelsData,
-  getParcelsData
+  getParcelsData,
 } from '../../storage/ParcelsStorage/index';
 import { getParcelById } from '../../service/parcels/index';
 import { useIsFocused } from '@react-navigation/native';
 import ListDivider from '../../shared/ListDivider/index';
-import { parcelsDataToParcelLists } from "../../utils/dataTranform";
+import { parcelsDataToParcelLists } from '../../utils/dataTranform';
 
 const COURIER_DATA = [
   {
@@ -99,16 +99,13 @@ const COURIER_DATA = [
   },
 ];
 
-type ParcelListsPropTypes = StackScreenProps<
-  RootStackParamList,
-  'ParcelLists'
-  >;
+type ParcelListsPropTypes = StackScreenProps<RootStackParamList, 'ParcelLists'>;
 
 export default function ParcelLists(props: ParcelListsPropTypes) {
   const { navigation } = props;
   const [parcelLists, setParcelLists] = useState<ParcelListType[]>([]);
 
-  const isFocused = useIsFocused()
+  const isFocused = useIsFocused();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [parcelId, setParcelId] = useState<string>('');
@@ -164,9 +161,7 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
           )}
           keyExtractor={(item) => item.pickupDate}
           showsVerticalScrollIndicator={false}
-          ItemSeparatorComponent={() => (
-            <ListDivider />
-          )}
+          ItemSeparatorComponent={() => <ListDivider />}
           ListHeaderComponent={() => (
             <View style={{ marginBottom: 17, marginTop: 48 }}>
               <Text style={{ fontSize: 24, fontWeight: '500' }}>

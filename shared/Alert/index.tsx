@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, Text, View, StyleSheet, Pressable } from 'react-native';
-import COLORS from "../../utils/colors";
+import COLORS from '../../utils/colors';
 
 interface AlertPropsType {
   open: boolean;
@@ -18,7 +18,7 @@ const CustomAlert = ({
   buttonText,
   icon,
   onButtonPress,
-                       description
+  description,
 }: React.PropsWithChildren<AlertPropsType>) => {
   return (
     <>
@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: COLORS.darkGrey,
     textAlign: 'center',
-    fontWeight: '400'
-  }
+    fontWeight: '400',
+  },
 });
 const footerStyles = StyleSheet.create({
   buttonContainer: {

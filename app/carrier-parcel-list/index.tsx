@@ -118,7 +118,7 @@ const CarrierParcelList = ({
     } else {
       setDeliveryError(true);
     }
-  }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -198,7 +198,20 @@ const CarrierParcelList = ({
         }}
         buttonText={'Show Parcel List'}
         onButtonPress={async () => {
-          await navigateToParcelList()
+          await navigateToParcelList();
+        }}
+        description={'Parcel successfully delivered to carrier'}
+      />
+
+      <Alert
+        icon={<AntDesign name='warning' style={headerStyles.icon} />}
+        open={deliveryError}
+        onRequestClose={() => {
+          setDeliveryError(false);
+        }}
+        buttonText={'BACK'}
+        onButtonPress={() => {
+          navigation.goBack();
         }}
         description={'Parcel successfully delivered to carrier'}
       />

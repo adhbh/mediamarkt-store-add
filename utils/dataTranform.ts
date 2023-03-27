@@ -7,9 +7,7 @@ export const parcelsDataToParcelLists = (parcelsData: ParcelType[]) => {
   const parcelListData = uniquePickupDates.map((pickupDate) => {
     return {
       pickupDate,
-      parcels: parcelsData.filter(
-        (parcel) => parcel.pickupDate === pickupDate
-      ),
+      parcels: parcelsData.filter((parcel) => parcel.pickupDate === pickupDate),
     };
   });
 

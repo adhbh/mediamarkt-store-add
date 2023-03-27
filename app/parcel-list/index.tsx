@@ -67,7 +67,7 @@ const ParcelList = ({
     navigationProp.navigate('CarrierParcelList', {
       title: parcel.id,
       parcel: parcel,
-      parcelList: params.parcelList
+      parcelList: params.parcelList,
     });
   };
 
@@ -88,7 +88,6 @@ const ParcelList = ({
     }, 0);
   };
   return (
-
     <SafeAreaView style={styles.container}>
       <View style={headingStyles.container}>
         <Pressable onPress={() => navigation.goBack()}>
@@ -108,9 +107,7 @@ const ParcelList = ({
         renderItem={({ item: parcel }) => (
           <Item parcel={parcel} onPressButton={onItemPress} />
         )}
-        ItemSeparatorComponent={() => (
-          <ListDivider />
-        )}
+        ItemSeparatorComponent={() => <ListDivider />}
         keyExtractor={(item) => item.id}
       />
     </SafeAreaView>
