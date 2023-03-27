@@ -13,13 +13,8 @@ import { headingStyles, listStyles } from './styles';
 import COLORS from '../../utils/colors';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/RootStackParamList';
-
-const data = [
-  { parcelTitle: '641DB7B2FC13 Parcel List', courierName: 'Seur', count: 5 },
-  { parcelTitle: '641DB7B2FC14 Parcel List', courierName: 'MRW', count: 4 },
-  { parcelTitle: '641DB7B2FC15 Parcel List', courierName: 'DHL', count: 3 },
-  { parcelTitle: '641DB7B2FC16 Parcel List', courierName: 'UPA', count: 2 },
-];
+import { useEffect, useState } from 'react';
+import { ParcelType } from '../../types/ParcelList';
 
 interface ItemProps {
   title: string;
@@ -55,16 +50,31 @@ const ParcelList = ({
 }: ParcelListNavigationProp) => {
   const navigation = useNavigation();
 
+  const [parcels, setParcels] = useState<ParcelType[]>()
+
+  const { params } = route
+
   const onDeliveryButtonPress = () => {
     navigationProp.navigate('CarrierParcelList');
   };
+
+  useEffect(() => {
+    const getItemDetails = async () => {
+      const parcelListData = params.item
+
+      const parcels = parcelListData.parcels
+
+      setParcels(parcels)
+    }
+    getItemDetails()
+  }, [params.item])
   return (
     <SafeAreaView style={styles.container}>
       <View style={headingStyles.container}>
         <Pressable onPress={() => navigation.goBack()}>
           <AntDesign name='arrowleft' size={24} color='black' />
         </Pressable>
-        <Text style={headingStyles.title}>{route.params.title}</Text>
+        <Text style={headingStyles.title}>{params.title}</Text>
       </View>
       <Text style={headingStyles.subTitle}>14 items to be picked up</Text>
       <FlatList
@@ -72,12 +82,12 @@ const ParcelList = ({
           marginLeft: 20,
           marginRight: 20,
         }}
-        data={data}
-        renderItem={({ item }) => (
+        data={parcels}
+        renderItem={({ item: parcel }) => (
           <Item
-            title={item.parcelTitle}
-            courierName={item.courierName}
-            count={item.count}
+            title={parcel.id}
+            courierName={parcel.carrierId ? parcel.carrierId : ''}
+            count={parcel.itemsCount}
             onPressButton={onDeliveryButtonPress}
           />
         )}

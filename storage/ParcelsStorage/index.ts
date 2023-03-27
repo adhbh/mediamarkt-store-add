@@ -5,7 +5,7 @@ import { ParcelType } from '../../types/ParcelList';
 export const storeDefaultData = async () => {
   await AsyncStorage.setItem(
     '@parcelsData',
-    JSON.stringify(ParcelsDefaultData)
+    JSON.stringify([])
   );
 };
 

@@ -140,6 +140,7 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
   const onItemPressed = (item: ParcelListType) => {
     navigation.navigate('ParcelList', {
       title: `Parcel List ${item.pickupDate}`,
+      item
     });
   };
 
