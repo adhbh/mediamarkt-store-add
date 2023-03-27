@@ -1,13 +1,6 @@
 import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import {
-  FlatList,
-  Pressable,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { FlatList, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { footerStyles, headingStyles, listStyles } from './styles';
 import COLORS from '../../utils/colors';
 import BottomSheet from '../../shared/BottomSheet/index';
@@ -17,6 +10,8 @@ import { RootStackParamList } from '../../types/RootStackParamList';
 import { getItemsDetailsByIds } from '../../service/items/index';
 import { ItemType } from '../../types/Item';
 import CustomTextInput from '../../shared/TextInput/index';
+import { updateParcelById } from '../../storage/ParcelsStorage/index';
+import { DeliveryStatus } from '../../types/ParcelList';
 
 interface ItemTypeIconMap {
   [type: string]: JSX.Element;
@@ -49,13 +44,16 @@ type CarrierParcelListNavigationProp = StackScreenProps<
   'CarrierParcelList'
 >;
 
-const CarrierParcelList = ({ route }: CarrierParcelListNavigationProp) => {
+const CarrierParcelList = ({ route, navigation: sceenNavigation }: CarrierParcelListNavigationProp) => {
   const navigation = useNavigation();
 
   const [items, setItems] = useState<ItemType[]>([]);
 
-  const [driversName, setDriversName] = useState<string>('');
+  const [driverName, setDriverName] = useState<string>('');
   const [licenseNumber, setLicenseNumber] = useState<string>('');
+
+  const [delivered, setDelivered] = useState<boolean>(false);
+  const [deliveryError, setDeliveryError] = useState<boolean>(false);
 
   const { params } = route;
 
@@ -70,6 +68,25 @@ const CarrierParcelList = ({ route }: CarrierParcelListNavigationProp) => {
   }, [itemIds]);
 
   const [modalVisible, setModalVisible] = useState(false);
+  
+  const updateDeliveryStatus = async () => {
+    const updatedParcel = await updateParcelById(params.parcel.id, {
+      ...params.parcel,
+      deliveryInfo: {
+        driverName,
+        licenseNumber,
+        status: DeliveryStatus.DELIVERED
+      }
+    })
+
+
+    if(updatedParcel) {
+      sceenNavigation.navigate('ParcelLists')
+      setDelivered(true)
+    } else {
+      setDeliveryError(true)
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -124,17 +141,17 @@ const CarrierParcelList = ({ route }: CarrierParcelListNavigationProp) => {
         }}
         title={'Delivery Information'}
         buttonTitle={'NEXT'}
-        onButtonPress={() => {
-          setModalVisible(false);
+        onButtonPress={async () => {
+          await updateDeliveryStatus()
         }}
       >
         <>
           <CustomTextInput
             placeholder={"Driver's Name"}
             containerStyles={{ marginBottom: 10 }}
-            value={driversName}
+            value={driverName}
             onChangeValue={(name) => {
-              setDriversName(name);
+              setDriverName(name);
             }}
           />
           <CustomTextInput

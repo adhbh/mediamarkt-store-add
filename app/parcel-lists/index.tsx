@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import CustomTextInput from '../../shared/TextInput';
 import BottomSheet from '../../shared/BottomSheet';
 import { RootStackParamList } from '../../types/RootStackParamList';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import CustomSelector from '../../shared/Selector/index';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ParcelListType, ParcelType } from '../../types/ParcelList';
@@ -22,6 +22,7 @@ import {
   getParcelsData
 } from '../../storage/ParcelsStorage/index';
 import { getParcelById } from '../../service/parcels/index';
+import { useIsFocused } from '@react-navigation/native';
 
 const COURIER_DATA = [
   {
@@ -96,18 +97,16 @@ const COURIER_DATA = [
   },
 ];
 
-type ParcelListsNavigationProp = StackNavigationProp<
+type ParcelListsPropTypes = StackScreenProps<
   RootStackParamList,
   'ParcelLists'
->;
-
-interface ParcelListsPropTypes {
-  navigation: ParcelListsNavigationProp;
-}
+  >;
 
 export default function ParcelLists(props: ParcelListsPropTypes) {
   const { navigation } = props;
   const [parcelLists, setParcelLists] = useState<ParcelListType[]>([]);
+
+  const isFocused = useIsFocused()
 
   const [modalVisible, setModalVisible] = useState(false);
   const [parcelId, setParcelId] = useState<string>('');
@@ -138,7 +137,7 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
       }
     };
     getDefaultData();
-  }, []);
+  }, [isFocused]);
 
   const onItemPressed = (parcelList: ParcelListType) => {
     navigation.navigate('ParcelList', {
