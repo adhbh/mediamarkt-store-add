@@ -97,10 +97,11 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
 
   // Callback when user adds a new parcel, add parcel to storage
   const onAddNewParcel = async () => {
-    setCarrierId('');
-    setParcelId('');
+
     const parcelFromStorage = await getParcelById(parcelId);
     if (parcelFromStorage !== null) {
+      setCarrierId('');
+      setParcelId('');
       setModalVisible(false);
       setAddParcelError('Parcel has been already added to the list');
       return;
@@ -120,6 +121,8 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
         setParcelLists(sortedParcelListData);
       }
     } else {
+      setCarrierId('');
+      setParcelId('');
       setAddParcelError("Parcel ID not found. Can't add it to the list.");
     }
     setCarrierId('');

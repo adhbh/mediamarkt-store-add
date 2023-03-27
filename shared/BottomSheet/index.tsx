@@ -1,8 +1,16 @@
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import COLORS from '../../utils/colors';
+import React from 'react';
 
-export default function BottomSheet(props: any) {
-  const { open, onRequestClose, onButtonPress, title, buttonTitle } = props;
+interface BottomSheetPropTypes {
+  open: boolean;
+  onRequestClose: () => void;
+  onButtonPress: () => void;
+  title: string;
+  buttonTitle: string;
+}
+export default function BottomSheet(props: React.PropsWithChildren<BottomSheetPropTypes>) {
+  const { open, onRequestClose, onButtonPress, title, buttonTitle, children } = props;
 
   return (
     <>
@@ -37,7 +45,7 @@ export default function BottomSheet(props: any) {
           <View style={styles.modalView}>
             <Text style={styles.modalText}>{title}</Text>
             <View style={styles.divider}></View>
-            {props.children}
+            {children}
             <Pressable
               style={[styles.button]}
               onPress={() => {

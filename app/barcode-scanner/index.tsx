@@ -1,21 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-} from 'react-native';
+import { Text, View, StyleSheet, SafeAreaView } from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import COLORS from '../../utils/colors';
 import BottomSheet from '../../shared/BottomSheet';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
+import { getParcelByIdApi } from '../../service/parcels/index';
+import { ParcelType } from '../../types/ParcelList';
+import Alert from '../../shared/Alert/index';
+import { FONT_SIZE } from '../../utils/fonts';
+import { SPACINGS } from '../../utils/spacings';
+import CustomSelector from '../../shared/Selector/index';
+import { useCarriersState } from '../../contexts/CarriersContext';
+import {
+  addToParcelsData,
+  getParcelById,
+} from '../../storage/ParcelsStorage/index';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../../types/RootStackParamList';
 
-export default function BarcodeScanner() {
+type ScannerPropTypes = StackScreenProps<RootStackParamList, 'Scanner'>;
+
+export default function BarcodeScanner({ navigation }: ScannerPropTypes) {
   const [hasPermission, setHasPermission] = useState<boolean>(false);
   const [scanned, setScanned] = useState<boolean>(false);
-  const [showParcelAdditionModal, setShowParcelAdditionModal] =
-    useState<boolean>(true);
+  const [showParcelAdditionBottomSheet, setShowParcelAdditionBottomSheet] =
+    useState<boolean>(false);
+  const [carrierId, setCarrierId] = useState<string>('');
+
+  const [showCourierAdditionBottomSheet, setCourierAdditionBottomSheet] =
+    useState<boolean>(false);
+
+  const [parcelScanError, setParcelScanError] = useState<string | null>(null);
+
+  const [parcel, setParcel] = useState<ParcelType | null>(null);
+
+  const carriers = useCarriersState();
 
   // Get permission
   useEffect(() => {
@@ -27,9 +46,24 @@ export default function BarcodeScanner() {
     getBarCodeScannerPermissions();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }: any) => {
+  const handleBarCodeScanned = async ({ type, data }: any) => {
     setScanned(true);
-    setShowParcelAdditionModal(true);
+    const parcelData = await getParcelByIdApi(data);
+    if (!parcelData) {
+      setShowParcelAdditionBottomSheet(false);
+      setScanned(false);
+      setParcelScanError(
+        `Parcel does not exist for the scanned parcel id: ${data}`
+      );
+      return;
+    }
+    setParcel(parcelData);
+    setShowParcelAdditionBottomSheet(true);
+  };
+
+  const onNextTapped = () => {
+    setShowParcelAdditionBottomSheet(false);
+    setCourierAdditionBottomSheet(true);
   };
 
   if (hasPermission === null) {
@@ -39,6 +73,28 @@ export default function BarcodeScanner() {
     return <Text>No access to camera</Text>;
   }
 
+  const carrierOptions = carriers.map((item) => ({
+    id: item.id,
+    value: `${item.companyName} (${item.id})`,
+  }));
+
+  const onAddNewParcel = async () => {
+    if (parcel && parcel.id) {
+      const parcelFromStorage = await getParcelById(parcel.id);
+      if (parcelFromStorage !== null) {
+        setCarrierId('');
+        setParcel(null);
+        setCourierAdditionBottomSheet(false);
+        setParcelScanError('Parcel has been already added to the list');
+        return;
+      }
+      const updatedParcelsData = await addToParcelsData(parcel, carrierId);
+      if (updatedParcelsData) {
+        navigation.navigate('ParcelLists');
+      }
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <BarCodeScanner
@@ -46,22 +102,64 @@ export default function BarcodeScanner() {
         style={StyleSheet.absoluteFillObject}
       />
       <BottomSheet
-        open={showParcelAdditionModal}
-        onRequestClose={() => setShowParcelAdditionModal(false)}
-        onButtonPress={() => setShowParcelAdditionModal(false)}
+        open={showParcelAdditionBottomSheet}
+        onRequestClose={() => {
+          setScanned(false);
+          setShowParcelAdditionBottomSheet(false);
+        }}
+        onButtonPress={onNextTapped}
+        buttonTitle='NEXT'
+        title='Adding following parcel'
       >
         <View style={styles.parcelAddedContainer}>
           <View style={listStyles.itemContainer}>
             <FontAwesome5 name='truck' style={listStyles.icon} />
             <View style={listStyles.contentContainer}>
-              <Text style={listStyles.title}>641DB7B2FC13</Text>
+              <Text style={listStyles.title}>{parcel?.id}</Text>
               <Text style={listStyles.content}>
-                The carrier will pick up the parcel today at 10:22 AM
+                The carrier will pick up the parcel on {parcel?.pickupDate}
               </Text>
             </View>
           </View>
         </View>
       </BottomSheet>
+
+      <BottomSheet
+        open={showCourierAdditionBottomSheet}
+        onRequestClose={() => {
+          setScanned(false);
+          setCourierAdditionBottomSheet(false);
+        }}
+        onButtonPress={async () => {
+          await onAddNewParcel();
+        }}
+        buttonTitle='ADD'
+        title='Select Carrier Info'
+      >
+        <CustomSelector
+          placeholder={'Carrier ID'}
+          options={carrierOptions}
+          onSelectItem={(item) => {
+            setCarrierId(item.id);
+          }}
+          selectedId={carrierId}
+        />
+      </BottomSheet>
+
+      <Alert
+        icon={<AntDesign name='warning' style={headerStyles.icon} />}
+        open={!!parcelScanError}
+        onRequestClose={() => {
+          setScanned(false);
+          setParcelScanError(null);
+        }}
+        buttonText={'BACK'}
+        onButtonPress={() => {
+          setScanned(false);
+          setParcelScanError(null);
+        }}
+        description={parcelScanError ? parcelScanError : 'Something went wrong'}
+      />
     </SafeAreaView>
   );
 }
@@ -118,4 +216,12 @@ const listStyles = StyleSheet.create({
     flexShrink: 1,
   },
   rightSection: { color: '#DF0000', fontWeight: '500', fontSize: 10 },
+});
+
+const headerStyles = StyleSheet.create({
+  icon: {
+    fontSize: FONT_SIZE.heading,
+    color: COLORS.red,
+    marginBottom: SPACINGS.small,
+  },
 });
