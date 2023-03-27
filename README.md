@@ -1,34 +1,58 @@
-# TypeScript Expor Bootstrap (base / project starter)
+# Medimark Store App
 
-This is a repository intended to serve as a starting point if you want to bootstrap an Expo project in TypeScript.
+Submited by: Adheesh Bhatia
 
-## Features
+Email: adheeshbhatia@gmail.com
 
-- [TypeScript](https://www.typescriptlang.org/)
-- [Expo](https://expo.dev/)
-- [Jest](https://jestjs.io) with [React Testing Library](https://testing-library.com/docs/dom-testing-library/intro)
-- [Babel](https://babeljs.io/)
+## How to run Demo
 
-## Running the app
+#### Prerequisites
+Install [Expo Go](https://expo.dev/client) app on Android phone. Note that the app has been tested on Android on actual device and on IOS simulator. Hence, some features like Barcode Scanner might not work on IOS.
 
+#### Installation and running demo
+
+1. Clone the repository
 ```bash
-# install dependencies
-yarn install
-
-# run in web mode
-yarn web
-
-# run in android
-yarn android
-
-# run in ios
-yarn ios
+$ git clone git@github.com:adhbh/mediamarkt-store-add.git
 ```
-
-## Testing
-
-### Jest with supertest
-
+2. Install dependencies
 ```bash
-yarn test
+$ yarn install
 ```
+3. Run the demo
+```bash
+$ yarn start
+```
+4. QR code will display in terminal. Scan the displayed QR code using Expo Go app
+
+## User stories
+
+### 1. Add Parcel Manually
+
+#### Add new parcels by entering the parcel id and carrier id manually.
+
+#### There can only be one carrier assigned to a parcel
+
+### 2. Add Parcel using Barcode
+
+#### Add new parcels by scanning the parcel barcode
+
+### 3. Show Parcels Lists
+
+#### Show the full list of available parcels grouped by pickup date
+
+#### Show the parcel and items details inside of parcel lists
+
+### 4. Show Parcels Lists
+
+#### Show the full list of available parcels grouped by pickup date
+
+#### Show the parcel and items details inside of each parcel list
+
+### 5. Parcel Handover
+
+#### Handover with the entry of the driver's name and its license plate.
+
+#### Validate if the supplied carrier exists
+
+#### Validate if the correct carrier is picking up the parcel
