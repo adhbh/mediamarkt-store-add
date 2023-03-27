@@ -16,6 +16,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/RootStackParamList';
 import { getItemsDetailsByIds } from '../../service/items/index';
 import { ItemType } from '../../types/Item';
+import CustomTextInput from '../../shared/TextInput/index';
 
 interface ItemTypeIconMap {
   [type: string]: JSX.Element;
@@ -52,6 +53,9 @@ const CarrierParcelList = ({ route }: CarrierParcelListNavigationProp) => {
   const navigation = useNavigation();
 
   const [items, setItems] = useState<ItemType[]>([]);
+
+  const [driversName, setDriversName] = useState<string>('');
+  const [licenseNumber, setLicenseNumber] = useState<string>('');
 
   const { params } = route;
 
@@ -125,11 +129,21 @@ const CarrierParcelList = ({ route }: CarrierParcelListNavigationProp) => {
         }}
       >
         <>
-          {/*<CustomTextInput*/}
-          {/*  placeholder={"Driver's Name"}*/}
-          {/*  containerStyles={{ marginBottom: 10 }}*/}
-          {/*/>*/}
-          {/*<CustomTextInput placeholder={'License Plate'} />*/}
+          <CustomTextInput
+            placeholder={"Driver's Name"}
+            containerStyles={{ marginBottom: 10 }}
+            value={driversName}
+            onChangeValue={(name) => {
+              setDriversName(name);
+            }}
+          />
+          <CustomTextInput
+            placeholder={'License Plate'}
+            value={licenseNumber}
+            onChangeValue={(name) => {
+              setLicenseNumber(name);
+            }}
+          />
         </>
       </BottomSheet>
     </SafeAreaView>
