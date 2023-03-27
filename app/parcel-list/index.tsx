@@ -31,7 +31,7 @@ const Item = ({ parcel, onPressButton }: ItemProps) => {
     <View style={listStyles.itemContainer}>
       <Pressable onPress={() => onPressButton(parcel)}>
         <View style={listStyles.leftSection}>
-          <FontAwesome5 name="truck" style={listStyles.icon} />
+          <FontAwesome5 name='truck' style={listStyles.icon} />
           <View style={listStyles.contentContainer}>
             <Text style={listStyles.title}>{parcel.id}</Text>
             <Text style={listStyles.content}>
@@ -64,8 +64,6 @@ type ParcelListNavigationProp = StackScreenProps<
   RootStackParamList,
   'ParcelList'
 >;
-
-
 
 const ParcelList = ({
   route,
@@ -105,7 +103,7 @@ const ParcelList = ({
     <SafeAreaView style={styles.container}>
       <View style={headingStyles.container}>
         <Pressable onPress={() => navigation.goBack()}>
-          <AntDesign name="arrowleft" size={24} color="black" />
+          <AntDesign name='arrowleft' size={24} color='black' />
         </Pressable>
         <Text style={headingStyles.title}>{params.title}</Text>
       </View>
