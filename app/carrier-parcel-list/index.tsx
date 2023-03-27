@@ -108,7 +108,7 @@ const CarrierParcelList = ({
       return;
     }
 
-    if (carrier.id !== params.parcel.id) {
+    if (carrier.id !== params.parcel.deliveryInfo.carrierId) {
       setDriverName('');
       setLicensePlate('');
       setDeliveryError('A different carrier is assigned to this parcel');

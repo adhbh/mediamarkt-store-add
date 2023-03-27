@@ -112,7 +112,12 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
       const updatedParcelsData = await addToParcelsData(parcelData, carrierId);
       if (updatedParcelsData) {
         const updatedParcelLists = parcelsDataToParcelLists(updatedParcelsData);
-        setParcelLists(updatedParcelLists);
+        const sortedParcelListData = updatedParcelLists.sort((a, b) => {
+          return (
+            new Date(a.pickupDate).getTime() - new Date(b.pickupDate).getTime()
+          );
+        });
+        setParcelLists(sortedParcelListData);
       }
     } else {
       setAddParcelError("Parcel ID not found. Can't add it to the list.");
