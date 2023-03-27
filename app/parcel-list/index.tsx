@@ -1,5 +1,4 @@
-import { FontAwesome5 } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import {
   FlatList,
@@ -14,7 +13,7 @@ import COLORS from '../../utils/colors';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/RootStackParamList';
 import { useEffect, useState } from 'react';
-import { ParcelType } from '../../types/ParcelList';
+import { DeliveryStatus, ParcelType } from '../../types/ParcelList';
 
 interface ItemProps {
   parcel: ParcelType;
@@ -35,7 +34,17 @@ const Item = ({ parcel, onPressButton }: ItemProps) => (
         </View>
       </View>
     </Pressable>
-    <Text style={listStyles.rightSection}>DELIVERY</Text>
+    <Text
+      style={
+        parcel.deliveryInfo.status === DeliveryStatus.DELIVERED
+          ? listStyles.deliveryStatusDelivered
+          : listStyles.deliveryStatusDelivery
+      }
+    >
+      {parcel.deliveryInfo.status === DeliveryStatus.DELIVERED
+        ? 'DELIVERED'
+        : 'DELIVERY'}
+    </Text>
   </View>
 );
 
@@ -78,6 +87,7 @@ const ParcelList = ({
     }, 0);
   };
   return (
+    
     <SafeAreaView style={styles.container}>
       <View style={headingStyles.container}>
         <Pressable onPress={() => navigation.goBack()}>

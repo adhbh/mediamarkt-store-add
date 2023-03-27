@@ -1,3 +1,14 @@
+export enum DeliveryStatus {
+  PENDING = 'PENDING',
+  DELIVERED = 'DELIVERED'
+}
+
+export interface ParcelDeliveryType {
+  driverName?: string;
+  licenseNumber?: string;
+  status: DeliveryStatus;
+}
+
 export interface ParcelType {
   id: string;
   items: string[];
@@ -6,7 +17,8 @@ export interface ParcelType {
   deliveryAddress: string;
   pickupAddress: string;
   itemsCount: number;
-  carrierId?: string;
+  deliveryInfo: ParcelDeliveryType;
+  carrierId: string;
 }
 
 export interface ParcelListType {

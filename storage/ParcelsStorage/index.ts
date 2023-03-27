@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { ParcelsDefaultData } from '../mocks/parcelListData';
-import { ParcelType } from '../../types/ParcelList';
+import { DeliveryStatus, ParcelType } from '../../types/ParcelList';
 
 export const storeDefaultData = async () => {
   await AsyncStorage.setItem('@parcelsData', JSON.stringify([]));
@@ -23,11 +22,14 @@ export const addToParcelsData = async (
   if (stringifiedData) {
     const existingData = JSON.parse(stringifiedData);
 
-    const newParcelsData = [
+    const newParcelsData: ParcelType[] = [
       ...existingData,
       {
         ...parcel,
         carrierId,
+        deliveryInfo: {
+          status: DeliveryStatus.PENDING
+        }
       },
     ];
 
