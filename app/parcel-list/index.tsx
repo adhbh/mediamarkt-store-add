@@ -14,44 +14,58 @@ import { RootStackParamList } from '../../types/RootStackParamList';
 import { useEffect, useState } from 'react';
 import { DeliveryStatus, ParcelType } from '../../types/ParcelList';
 import ListDivider from '../../shared/ListDivider/index';
+import { useCarriersState } from '../../contexts/CarriersContext';
 
 interface ItemProps {
   parcel: ParcelType;
   onPressButton: (parcel: ParcelType) => void;
 }
 
-const Item = ({ parcel, onPressButton }: ItemProps) => (
-  <View style={listStyles.itemContainer}>
-    <Pressable onPress={() => onPressButton(parcel)}>
-      <View style={listStyles.leftSection}>
-        <FontAwesome5 name='truck' style={listStyles.icon} />
-        <View style={listStyles.contentContainer}>
-          <Text style={listStyles.title}>{parcel.id}</Text>
-          <Text style={listStyles.content}>{parcel.carrierId}</Text>
-          <Text style={listStyles.content}>
-            {parcel.items.length} items to be picked up
-          </Text>
+const Item = ({ parcel, onPressButton }: ItemProps) => {
+  const carriers = useCarriersState();
+  const carrierDetails = carriers.find(
+    (carrier) => carrier.id === parcel.carrierId
+  );
+
+  return (
+    <View style={listStyles.itemContainer}>
+      <Pressable onPress={() => onPressButton(parcel)}>
+        <View style={listStyles.leftSection}>
+          <FontAwesome5 name="truck" style={listStyles.icon} />
+          <View style={listStyles.contentContainer}>
+            <Text style={listStyles.title}>{parcel.id}</Text>
+            <Text style={listStyles.content}>
+              {carrierDetails
+                ? `${carrierDetails.companyName} (${carrierDetails.id})`
+                : parcel.carrierId}
+            </Text>
+            <Text style={listStyles.content}>
+              {parcel.items.length} items to be picked up
+            </Text>
+          </View>
         </View>
-      </View>
-    </Pressable>
-    <Text
-      style={
-        parcel.deliveryInfo.status === DeliveryStatus.DELIVERED
-          ? listStyles.deliveryStatusDelivered
-          : listStyles.deliveryStatusDelivery
-      }
-    >
-      {parcel.deliveryInfo.status === DeliveryStatus.DELIVERED
-        ? 'DELIVERED'
-        : 'DELIVERY'}
-    </Text>
-  </View>
-);
+      </Pressable>
+      <Text
+        style={
+          parcel.deliveryInfo.status === DeliveryStatus.DELIVERED
+            ? listStyles.deliveryStatusDelivered
+            : listStyles.deliveryStatusDelivery
+        }
+      >
+        {parcel.deliveryInfo.status === DeliveryStatus.DELIVERED
+          ? 'DELIVERED'
+          : 'DELIVERY'}
+      </Text>
+    </View>
+  );
+};
 
 type ParcelListNavigationProp = StackScreenProps<
   RootStackParamList,
   'ParcelList'
 >;
+
+
 
 const ParcelList = ({
   route,
@@ -91,7 +105,7 @@ const ParcelList = ({
     <SafeAreaView style={styles.container}>
       <View style={headingStyles.container}>
         <Pressable onPress={() => navigation.goBack()}>
-          <AntDesign name='arrowleft' size={24} color='black' />
+          <AntDesign name="arrowleft" size={24} color="black" />
         </Pressable>
         <Text style={headingStyles.title}>{params.title}</Text>
       </View>

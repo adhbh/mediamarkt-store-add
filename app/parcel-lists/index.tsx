@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import CustomTextInput from '../../shared/TextInput';
 import BottomSheet from '../../shared/BottomSheet';
 import { RootStackParamList } from '../../types/RootStackParamList';
-import { StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
+import { StackScreenProps } from '@react-navigation/stack';
 import CustomSelector from '../../shared/Selector/index';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ParcelListType, ParcelType } from '../../types/ParcelList';
