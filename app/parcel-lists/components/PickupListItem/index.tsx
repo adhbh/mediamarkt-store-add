@@ -1,15 +1,11 @@
 import {
   Pressable,
-  SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
-  TouchableHighlight,
   View,
 } from 'react-native';
-import COLORS from '../../utils/colors';
-import { useNavigation } from '@react-navigation/native';
-import { ParcelListType } from '../../types/ParcelList';
+import COLORS from '../../../../utils/colors';
+import { ParcelListType } from '../../../../types/ParcelList';
 
 interface PickupListItemPropType {
   item: ParcelListType;
@@ -28,7 +24,7 @@ export default function PickupListItem(props: PickupListItemPropType) {
           <Text
             style={{ fontSize: 16, color: COLORS.darkGrey, fontWeight: '500' }}
           >
-            Parcel List 25/03/2023
+            Parcel List {item.pickupDate}
           </Text>
           <Text
             style={{ fontSize: 10, fontWeight: '400', color: COLORS.darkGrey }}
@@ -38,7 +34,7 @@ export default function PickupListItem(props: PickupListItemPropType) {
           <Text
             style={{ fontSize: 10, fontWeight: '400', color: COLORS.darkGrey }}
           >
-            14 Items
+            {item.parcels.length} Items
           </Text>
         </View>
         <View
@@ -50,7 +46,7 @@ export default function PickupListItem(props: PickupListItemPropType) {
           }}
         >
           <Text style={{ fontSize: 12, color: COLORS.red, fontWeight: '500' }}>
-            25/03/2023
+            {item.pickupDate}
           </Text>
         </View>
       </View>

@@ -7,7 +7,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import PickupListItem from '../../shared/PickupListItem';
+import PickupListItem from './components/PickupListItem';
 import COLORS from '../../utils/colors';
 import { useEffect, useState } from 'react';
 import CustomTextInput from '../../shared/TextInput';
