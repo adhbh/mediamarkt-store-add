@@ -107,7 +107,7 @@ const CustomSelector = (props: CustomSelectorPropTypes) => {
             autoCapitalize={'none'}
             style={styles.input}
             value={selectedItem ? selectedItem.value : ''}
-            editable={true}
+            editable={false}
             onFocus={onFocusHandler}
             onBlur={onBlurHandler}
             blurOnSubmit

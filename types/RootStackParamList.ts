@@ -4,5 +4,5 @@ export type RootStackParamList = {
   ParcelLists: undefined;
   ParcelList: { title: string; parcelList: ParcelListType };
   Scanner: undefined;
-  CarrierParcelList: { title: string; parcel: ParcelType };
+  CarrierParcelList: { title: string; parcel: ParcelType, parcelList: ParcelListType };
 };

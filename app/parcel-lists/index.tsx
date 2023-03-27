@@ -23,7 +23,8 @@ import {
 } from '../../storage/ParcelsStorage/index';
 import { getParcelById } from '../../service/parcels/index';
 import { useIsFocused } from '@react-navigation/native';
-import ListDivider from "../../shared/ListDivider/index";
+import ListDivider from '../../shared/ListDivider/index';
+import { parcelsDataToParcelLists } from "../../utils/dataTranform";
 
 const COURIER_DATA = [
   {
@@ -112,22 +113,6 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
   const [modalVisible, setModalVisible] = useState(false);
   const [parcelId, setParcelId] = useState<string>('');
   const [carrierId, setCarrierId] = useState<string>('');
-
-  const parcelsDataToParcelLists = (parcelsData: ParcelType[]) => {
-    const uniquePickupDates = [
-      ...new Set(parcelsData.map((item) => item.pickupDate)),
-    ];
-    const parcelListData = uniquePickupDates.map((pickupDate) => {
-      return {
-        pickupDate,
-        parcels: parcelsData.filter(
-          (parcel) => parcel.pickupDate === pickupDate
-        ),
-      };
-    });
-
-    return parcelListData;
-  };
 
   useEffect(() => {
     const getDefaultData = async () => {

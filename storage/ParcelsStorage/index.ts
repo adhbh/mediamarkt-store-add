@@ -5,7 +5,7 @@ export const storeDefaultData = async () => {
   await AsyncStorage.setItem('@parcelsData', JSON.stringify([]));
 };
 
-export const getParcelsData = async (): Promise<ParcelType[] | null> => {
+export const getParcelsData = async (): Promise<ParcelType[]> => {
   const stringifiedData = await AsyncStorage.getItem('@parcelsData');
   if (stringifiedData) {
     return JSON.parse(stringifiedData);

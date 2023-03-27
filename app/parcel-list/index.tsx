@@ -9,7 +9,6 @@ import {
   View,
 } from 'react-native';
 import { headingStyles, listStyles } from './styles';
-import COLORS from '../../utils/colors';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/RootStackParamList';
 import { useEffect, useState } from 'react';
@@ -68,6 +67,7 @@ const ParcelList = ({
     navigationProp.navigate('CarrierParcelList', {
       title: parcel.id,
       parcel: parcel,
+      parcelList: params.parcelList
     });
   };
 

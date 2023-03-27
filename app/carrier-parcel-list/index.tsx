@@ -1,18 +1,30 @@
 import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { FlatList, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import {
+  FlatList,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { footerStyles, headingStyles, listStyles } from './styles';
 import BottomSheet from '../../shared/BottomSheet/index';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/RootStackParamList';
 import { getItemsDetailsByIds } from '../../service/items/index';
 import { ItemType } from '../../types/Item';
 import CustomTextInput from '../../shared/TextInput/index';
-import { updateParcelById } from '../../storage/ParcelsStorage/index';
+import {
+  getParcelsData,
+  updateParcelById,
+} from '../../storage/ParcelsStorage/index';
 import { DeliveryStatus } from '../../types/ParcelList';
 import ListDivider from '../../shared/ListDivider/index';
-import COLORS from "../../utils/colors";
+import COLORS from '../../utils/colors';
+import { parcelsDataToParcelLists } from '../../utils/dataTranform';
+import Alert from '../../shared/Alert/index';
 
 interface ItemTypeIconMap {
   [type: string]: JSX.Element;
@@ -45,7 +57,10 @@ type CarrierParcelListNavigationProp = StackScreenProps<
   'CarrierParcelList'
 >;
 
-const CarrierParcelList = ({ route, navigation: sceenNavigation }: CarrierParcelListNavigationProp) => {
+const CarrierParcelList = ({
+  route,
+  navigation: sceenNavigation,
+}: CarrierParcelListNavigationProp) => {
   const navigation = useNavigation();
 
   const [items, setItems] = useState<ItemType[]>([]);
@@ -69,23 +84,39 @@ const CarrierParcelList = ({ route, navigation: sceenNavigation }: CarrierParcel
   }, [itemIds]);
 
   const [modalVisible, setModalVisible] = useState(false);
-  
+
   const updateDeliveryStatus = async () => {
     const updatedParcel = await updateParcelById(params.parcel.id, {
       ...params.parcel,
       deliveryInfo: {
         driverName,
         licenseNumber,
-        status: DeliveryStatus.DELIVERED
-      }
-    })
-
-
-    if(updatedParcel) {
-      sceenNavigation.navigate('ParcelLists')
-      setDelivered(true)
+        status: DeliveryStatus.DELIVERED,
+      },
+    });
+    if (updatedParcel) {
+      setDelivered(true);
     } else {
-      setDeliveryError(true)
+      setDeliveryError(true);
+    }
+    setModalVisible(false);
+  };
+
+  const navigateToParcelList = async () => {
+    const parcels = await getParcelsData();
+    const parcelLists = parcelsDataToParcelLists(parcels);
+
+    const updatedParcelList = parcelLists.find(
+      (parcelList) => parcelList.pickupDate === params.parcelList.pickupDate
+    );
+
+    if (updatedParcelList) {
+      sceenNavigation.navigate('ParcelList', {
+        title: params.parcelList.pickupDate,
+        parcelList: updatedParcelList,
+      });
+    } else {
+      setDeliveryError(true);
     }
   }
 
@@ -107,9 +138,7 @@ const CarrierParcelList = ({ route, navigation: sceenNavigation }: CarrierParcel
           <Item item={item} icon={ItemTypeIconMap[item.type]} />
         )}
         keyExtractor={(item) => item.id}
-        ItemSeparatorComponent={() => (
-          <ListDivider />
-        )}
+        ItemSeparatorComponent={() => <ListDivider />}
       />
 
       <View
@@ -139,7 +168,7 @@ const CarrierParcelList = ({ route, navigation: sceenNavigation }: CarrierParcel
         title={'Delivery Information'}
         buttonTitle={'NEXT'}
         onButtonPress={async () => {
-          await updateDeliveryStatus()
+          await updateDeliveryStatus();
         }}
       >
         <>
@@ -160,6 +189,19 @@ const CarrierParcelList = ({ route, navigation: sceenNavigation }: CarrierParcel
           />
         </>
       </BottomSheet>
+
+      <Alert
+        icon={<AntDesign name='checkcircleo' style={headerStyles.icon} />}
+        open={delivered}
+        onRequestClose={() => {
+          setDelivered(false);
+        }}
+        buttonText={'Show Parcel List'}
+        onButtonPress={async () => {
+          await navigateToParcelList()
+        }}
+        description={'Parcel successfully delivered to carrier'}
+      />
     </SafeAreaView>
   );
 };
@@ -168,6 +210,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.white,
+  },
+});
+
+const headerStyles = StyleSheet.create({
+  icon: {
+    fontSize: 48,
+    color: '#DF0000',
+    marginBottom: 20,
   },
 });
 
