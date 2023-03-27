@@ -61,7 +61,12 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
       const defaultParcelsData = await getParcelsData();
       if (defaultParcelsData) {
         const parcelListData = parcelsDataToParcelLists(defaultParcelsData);
-        setParcelLists(parcelListData);
+        const sortedParcelListData = parcelListData.sort((a, b) => {
+          return (
+            new Date(a.pickupDate).getTime() - new Date(b.pickupDate).getTime()
+          );
+        });
+        setParcelLists(sortedParcelListData);
       }
     };
     getDefaultData();
