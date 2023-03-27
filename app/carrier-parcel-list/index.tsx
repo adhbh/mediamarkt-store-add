@@ -12,6 +12,7 @@ import CustomTextInput from '../../shared/TextInput/index';
 import { updateParcelById } from '../../storage/ParcelsStorage/index';
 import { DeliveryStatus } from '../../types/ParcelList';
 import ListDivider from '../../shared/ListDivider/index';
+import COLORS from "../../utils/colors";
 
 interface ItemTypeIconMap {
   [type: string]: JSX.Element;
@@ -32,8 +33,8 @@ const Item = ({ item, icon }: ItemPropType) => (
     <View style={listStyles.leftSection}>
       {icon}
       <View style={listStyles.contentContainer}>
-        <Text style={listStyles.title}>{item.id}</Text>
-        <Text style={listStyles.content}>{item.weight}</Text>
+        <Text style={listStyles.title}>{item.id.toUpperCase()}</Text>
+        <Text style={listStyles.content}>{item.weight} gm</Text>
       </View>
     </View>
   </View>
@@ -97,6 +98,10 @@ const CarrierParcelList = ({ route, navigation: sceenNavigation }: CarrierParcel
         <Text style={headingStyles.title}>{params.title}</Text>
       </View>
       <FlatList
+        style={{
+          marginLeft: 20,
+          marginRight: 20,
+        }}
         data={items}
         renderItem={({ item }) => (
           <Item item={item} icon={ItemTypeIconMap[item.type]} />
@@ -162,9 +167,7 @@ const CarrierParcelList = ({ route, navigation: sceenNavigation }: CarrierParcel
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    paddingRight: 20,
-    paddingLeft: 20,
+    backgroundColor: COLORS.white,
   },
 });
 

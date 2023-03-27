@@ -24,8 +24,6 @@ export const listStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginLeft: 20,
-    marginRight: 20,
   },
   leftSection: { flexDirection: 'row', alignItems: 'center' },
   contentContainer: { justifyContent: 'space-evenly', margin: 15 },
