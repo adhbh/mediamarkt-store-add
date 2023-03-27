@@ -3,10 +3,7 @@ import { ParcelsDefaultData } from '../mocks/parcelListData';
 import { ParcelType } from '../../types/ParcelList';
 
 export const storeDefaultData = async () => {
-  await AsyncStorage.setItem(
-    '@parcelsData',
-    JSON.stringify([])
-  );
+  await AsyncStorage.setItem('@parcelsData', JSON.stringify([]));
 };
 
 export const getParcelListsData = async (): Promise<ParcelType[] | null> => {

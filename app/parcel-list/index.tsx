@@ -29,7 +29,9 @@ const Item = ({ parcel, onPressButton }: ItemProps) => (
         <View style={listStyles.contentContainer}>
           <Text style={listStyles.title}>{parcel.id}</Text>
           <Text style={listStyles.content}>{parcel.carrierId}</Text>
-          <Text style={listStyles.content}>{parcel.items.length} items to be picked up</Text>
+          <Text style={listStyles.content}>
+            {parcel.items.length} items to be picked up
+          </Text>
         </View>
       </View>
     </Pressable>
@@ -55,7 +57,7 @@ const ParcelList = ({
   const onItemPress = (parcel: ParcelType) => {
     navigationProp.navigate('CarrierParcelList', {
       title: parcel.id,
-      parcel: parcel
+      parcel: parcel,
     });
   };
 
@@ -93,10 +95,7 @@ const ParcelList = ({
         }}
         data={parcels}
         renderItem={({ item: parcel }) => (
-          <Item
-            parcel={parcel}
-            onPressButton={onItemPress}
-          />
+          <Item parcel={parcel} onPressButton={onItemPress} />
         )}
         ItemSeparatorComponent={() => (
           <View

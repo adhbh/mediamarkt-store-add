@@ -1,4 +1,4 @@
-import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
+import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import {
   FlatList,
@@ -17,17 +17,15 @@ import { RootStackParamList } from '../../types/RootStackParamList';
 import { getItemsDetailsByIds } from '../../service/items/index';
 import { ItemType } from '../../types/Item';
 
-
 interface ItemTypeIconMap {
-  [type: string]: JSX.Element
+  [type: string]: JSX.Element;
 }
 const ItemTypeIconMap: ItemTypeIconMap = {
   Phone: <Feather name='smartphone' style={listStyles.icon} />,
   PC: <AntDesign name='laptop' style={listStyles.icon} />,
   Smartwatch: <Ionicons name='ios-watch' style={listStyles.icon} />,
   Television: <AntDesign name='laptop' style={listStyles.icon} />,
-
-}
+};
 
 interface ItemPropType {
   item: ItemType;
@@ -48,24 +46,24 @@ const Item = ({ item, icon }: ItemPropType) => (
 type CarrierParcelListNavigationProp = StackScreenProps<
   RootStackParamList,
   'CarrierParcelList'
-  >;
+>;
 
 const CarrierParcelList = ({ route }: CarrierParcelListNavigationProp) => {
   const navigation = useNavigation();
 
-  const [items, setItems] = useState<ItemType[]>([])
-  
+  const [items, setItems] = useState<ItemType[]>([]);
+
   const { params } = route;
-  
-  const itemIds = params.parcel.items
+
+  const itemIds = params.parcel.items;
 
   useEffect(() => {
     const getItemDetails = async () => {
-      const itemsDetails = getItemsDetailsByIds(itemIds)
-      setItems(itemsDetails)
-    }
+      const itemsDetails = getItemsDetailsByIds(itemIds);
+      setItems(itemsDetails);
+    };
     getItemDetails();
-  }, [itemIds])
+  }, [itemIds]);
 
   const [modalVisible, setModalVisible] = useState(false);
 

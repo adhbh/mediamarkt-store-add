@@ -17,7 +17,10 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import CustomSelector from '../../shared/Selector/index';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { ParcelListType, ParcelType } from '../../types/ParcelList';
-import { addToParcelsData, getParcelListsData } from '../../storage/ParcelsStorage/index';
+import {
+  addToParcelsData,
+  getParcelListsData,
+} from '../../storage/ParcelsStorage/index';
 import { getParcelById } from '../../service/parcels/index';
 
 const COURIER_DATA = [
@@ -123,14 +126,14 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
       };
     });
 
-    return parcelListData
-  }
+    return parcelListData;
+  };
 
   useEffect(() => {
     const getDefaultData = async () => {
       const defaultParcelsData = await getParcelListsData();
       if (defaultParcelsData) {
-        const parcelListData = parcelsDataToParcelLists(defaultParcelsData)
+        const parcelListData = parcelsDataToParcelLists(defaultParcelsData);
         setParcelLists(parcelListData);
       }
     };
@@ -151,14 +154,14 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
   const onAddNewParcel = async () => {
     const parcelData = await getParcelById(parcelId);
 
-    if(parcelData !== null) {
-      const updatedParcelsData = await addToParcelsData(parcelData, carrierId)
+    if (parcelData !== null) {
+      const updatedParcelsData = await addToParcelsData(parcelData, carrierId);
       if (updatedParcelsData) {
-        const updatedParcelLists = parcelsDataToParcelLists(updatedParcelsData)
-        setParcelLists(updatedParcelLists)
+        const updatedParcelLists = parcelsDataToParcelLists(updatedParcelsData);
+        setParcelLists(updatedParcelLists);
       }
     }
-    setModalVisible(false)
+    setModalVisible(false);
   };
 
   const data = COURIER_DATA.map((item) => ({
@@ -243,7 +246,7 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
         title={'Parcel and carrier information'}
         buttonTitle={'ADD'}
         onButtonPress={async () => {
-          await onAddNewParcel()
+          await onAddNewParcel();
         }}
       >
         <>

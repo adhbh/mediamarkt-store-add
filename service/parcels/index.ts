@@ -5,10 +5,14 @@ const getParcels = async () => {
   return ParcelsData;
 };
 
-export const getParcelById = async (parcelId: string): Promise<ParcelType | null> => {
-  const parcelDataFromService = ParcelsData.find((item) => item.id.$oid === parcelId);
+export const getParcelById = async (
+  parcelId: string
+): Promise<ParcelType | null> => {
+  const parcelDataFromService = ParcelsData.find(
+    (item) => item.id.$oid === parcelId
+  );
 
-  if(parcelDataFromService) {
+  if (parcelDataFromService) {
     return {
       id: parcelDataFromService.id.$oid,
       deliveryAddress: parcelDataFromService.deliveryAddress,
@@ -16,8 +20,8 @@ export const getParcelById = async (parcelId: string): Promise<ParcelType | null
       pickupAddress: parcelDataFromService.pickupAddress,
       pickupDate: parcelDataFromService.pickupDate,
       itemsCount: parcelDataFromService.itemsCount,
-      items: parcelDataFromService.items.map(item => item.$oid),
-    }
+      items: parcelDataFromService.items.map((item) => item.$oid),
+    };
   }
-  return null
+  return null;
 };
