@@ -23,6 +23,7 @@ import {
 } from '../../storage/ParcelsStorage/index';
 import { getParcelById } from '../../service/parcels/index';
 import { useIsFocused } from '@react-navigation/native';
+import ListDivider from "../../shared/ListDivider/index";
 
 const COURIER_DATA = [
   {
@@ -179,15 +180,7 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
           keyExtractor={(item) => item.pickupDate}
           showsVerticalScrollIndicator={false}
           ItemSeparatorComponent={() => (
-            <View
-              style={{
-                borderBottomWidth: 1,
-                borderBottomColor: COLORS.lightGrey,
-                paddingBottom: 10,
-                marginTop: 6,
-                marginBottom: 6,
-              }}
-            />
+            <ListDivider />
           )}
           ListHeaderComponent={() => (
             <View style={{ marginBottom: 17, marginTop: 48 }}>

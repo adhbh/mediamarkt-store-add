@@ -2,7 +2,6 @@ import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { FlatList, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { footerStyles, headingStyles, listStyles } from './styles';
-import COLORS from '../../utils/colors';
 import BottomSheet from '../../shared/BottomSheet/index';
 import { useEffect, useState } from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -12,6 +11,7 @@ import { ItemType } from '../../types/Item';
 import CustomTextInput from '../../shared/TextInput/index';
 import { updateParcelById } from '../../storage/ParcelsStorage/index';
 import { DeliveryStatus } from '../../types/ParcelList';
+import ListDivider from '../../shared/ListDivider/index';
 
 interface ItemTypeIconMap {
   [type: string]: JSX.Element;
@@ -103,15 +103,7 @@ const CarrierParcelList = ({ route, navigation: sceenNavigation }: CarrierParcel
         )}
         keyExtractor={(item) => item.id}
         ItemSeparatorComponent={() => (
-          <View
-            style={{
-              borderBottomWidth: 1,
-              borderBottomColor: COLORS.lightGrey,
-              paddingBottom: 10,
-              marginTop: 6,
-              marginBottom: 6,
-            }}
-          />
+          <ListDivider />
         )}
       />
 

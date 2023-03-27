@@ -14,6 +14,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/RootStackParamList';
 import { useEffect, useState } from 'react';
 import { DeliveryStatus, ParcelType } from '../../types/ParcelList';
+import ListDivider from '../../shared/ListDivider/index';
 
 interface ItemProps {
   parcel: ParcelType;
@@ -108,15 +109,7 @@ const ParcelList = ({
           <Item parcel={parcel} onPressButton={onItemPress} />
         )}
         ItemSeparatorComponent={() => (
-          <View
-            style={{
-              borderBottomWidth: 1,
-              borderBottomColor: COLORS.lightGrey,
-              paddingBottom: 10,
-              marginTop: 6,
-              marginBottom: 6,
-            }}
-          />
+          <ListDivider />
         )}
         keyExtractor={(item) => item.id}
       />
