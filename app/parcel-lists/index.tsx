@@ -16,7 +16,7 @@ import { RootStackParamList } from '../../types/RootStackParamList';
 import { StackScreenProps } from '@react-navigation/stack';
 import CustomSelector from '../../shared/Selector/index';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
-import { ParcelListType, ParcelType } from '../../types/ParcelList';
+import { ParcelListType } from '../../types/ParcelList';
 import {
   addToParcelsData,
   getParcelById,
@@ -136,7 +136,7 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
           ItemSeparatorComponent={() => <ListDivider />}
           ListHeaderComponent={() => (
             <View style={styles.listHeaderContainer}>
-              <Text style={styles.listHeading}>Parcel lists</Text>
+              <Text style={styles.listHeading}>Parcel Lists</Text>
             </View>
           )}
         />

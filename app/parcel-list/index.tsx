@@ -35,7 +35,7 @@ const Item = ({ parcel, onPressButton }: ItemProps) => {
         <View style={listStyles.leftSection}>
           <FontAwesome5 name='truck' style={listStyles.icon} />
           <View style={listStyles.contentContainer}>
-            <Text style={listStyles.title}>{parcel.id}</Text>
+            <Text style={listStyles.title}>{parcel.id} Parcel list</Text>
             <Text style={listStyles.content}>
               {carrierDetails
                 ? `${carrierDetails.companyName} (${carrierDetails.id})`
@@ -79,7 +79,7 @@ const ParcelList = ({
 
   const onItemPress = (parcel: ParcelType) => {
     navigationProp.navigate('CarrierParcelList', {
-      title: parcel.id,
+      title: `${parcel.id} Parcel List`,
       parcel: parcel,
       parcelList: params.parcelList,
     });

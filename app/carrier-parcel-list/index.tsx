@@ -29,6 +29,8 @@ import {
 } from '../../utils/dataTranform';
 import Alert from '../../shared/Alert/index';
 import { useCarriersState } from '../../contexts/CarriersContext';
+import { FONT_SIZE } from '../../utils/fonts';
+import { SPACINGS } from '../../utils/spacings';
 
 interface ItemTypeIconMap {
   [type: string]: JSX.Element;
@@ -127,7 +129,7 @@ const CarrierParcelList = ({
 
     if (updatedParcelList) {
       sceenNavigation.navigate('ParcelList', {
-        title: params.parcelList.pickupDate,
+        title: `Parcel list ${params.parcelList.pickupDate}`,
         parcelList: updatedParcelList,
       });
     } else {
@@ -143,6 +145,9 @@ const CarrierParcelList = ({
         </Pressable>
         <Text style={headingStyles.title}>{params.title}</Text>
       </View>
+      <Text style={headingStyles.subTitle}>
+        {params.parcel.itemsCount} items to be picked up
+      </Text>
       <FlatList
         style={{
           marginLeft: 20,
@@ -243,9 +248,9 @@ const styles = StyleSheet.create({
 
 const headerStyles = StyleSheet.create({
   icon: {
-    fontSize: 48,
-    color: '#DF0000',
-    marginBottom: 20,
+    fontSize: FONT_SIZE.heading,
+    color: COLORS.red,
+    marginBottom: SPACINGS.small,
   },
 });
 

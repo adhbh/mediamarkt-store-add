@@ -1,27 +1,30 @@
 import { StyleSheet } from 'react-native';
 import COLORS from '../../utils/colors';
+import { SPACINGS } from '../../utils/spacings';
+import { FONT_SIZE, FONT_WEIGHT } from '../../utils/fonts';
 
 export const headingStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 48,
-    marginLeft: 20,
-    marginRight: 20,
+    marginTop: SPACINGS.xLarge,
+    marginLeft: SPACINGS.large,
+    marginRight: SPACINGS.large,
   },
   title: {
-    fontSize: 24,
-    fontWeight: '500',
-    marginLeft: 15,
+    fontSize: FONT_SIZE.heading,
+    fontWeight: FONT_WEIGHT.heavy,
+    marginLeft: SPACINGS.small,
     color: COLORS.darkGrey,
   },
   subTitle: {
-    fontSize: 10,
-    fontWeight: '400',
+    fontSize: FONT_SIZE.content,
+    fontWeight: FONT_WEIGHT.medium,
     color: COLORS.darkGrey,
-    marginTop: 11,
-    marginLeft: 20,
-    marginRight: 20,
+    marginTop: SPACINGS.small,
+    marginLeft: SPACINGS.large,
+    marginRight: SPACINGS.large,
+    marginBottom: SPACINGS.small,
   },
 });
 
@@ -32,31 +35,33 @@ export const listStyles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   leftSection: { flexDirection: 'row', alignItems: 'center' },
-  contentContainer: { justifyContent: 'space-evenly', margin: 15 },
+  contentContainer: { justifyContent: 'space-evenly' },
   icon: {
-    padding: 15,
+    padding: SPACINGS.small,
     backgroundColor: 'rgba(223, 0, 0, 0.1)',
     borderRadius: 10,
-    fontSize: 24,
-    color: '#df0000',
+    fontSize: FONT_SIZE.heading,
+    color: COLORS.red,
+    marginRight: SPACINGS.small,
   },
   title: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: FONT_SIZE.subHeading,
+    fontWeight: FONT_WEIGHT.medium,
+    color: COLORS.darkGrey,
   },
   content: {
-    fontSize: 10,
-    fontWeight: '400',
+    fontSize: FONT_SIZE.content,
+    fontWeight: FONT_WEIGHT.medium,
     color: 'rgba(58, 53, 65, 0.87)',
   },
   deliveryStatusDelivery: {
     color: COLORS.red,
-    fontWeight: '500',
-    fontSize: 10,
+    fontWeight: FONT_WEIGHT.heavy,
+    fontSize: FONT_SIZE.highlight,
   },
   deliveryStatusDelivered: {
-    color: COLORS.lightGrey,
-    fontWeight: '500',
-    fontSize: 10,
+    color: COLORS.darkGrey,
+    fontWeight: FONT_WEIGHT.heavy,
+    fontSize: FONT_SIZE.highlight,
   },
 });
