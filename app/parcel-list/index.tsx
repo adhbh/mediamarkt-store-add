@@ -50,9 +50,9 @@ const ParcelList = ({
 }: ParcelListNavigationProp) => {
   const navigation = useNavigation();
 
-  const [parcels, setParcels] = useState<ParcelType[]>()
+  const [parcels, setParcels] = useState<ParcelType[]>([]);
 
-  const { params } = route
+  const { params } = route;
 
   const onDeliveryButtonPress = () => {
     navigationProp.navigate('CarrierParcelList');
@@ -60,14 +60,20 @@ const ParcelList = ({
 
   useEffect(() => {
     const getItemDetails = async () => {
-      const parcelListData = params.item
+      const parcelListData = params.item;
 
-      const parcels = parcelListData.parcels
+      const parcels = parcelListData.parcels;
 
-      setParcels(parcels)
-    }
-    getItemDetails()
-  }, [params.item])
+      setParcels(parcels);
+    };
+    getItemDetails();
+  }, [params.item]);
+
+  const getTotalItems = () => {
+    return parcels.reduce((memo, parcel) => {
+      return memo + parcel.itemsCount;
+    }, 0);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={headingStyles.container}>
@@ -76,7 +82,9 @@ const ParcelList = ({
         </Pressable>
         <Text style={headingStyles.title}>{params.title}</Text>
       </View>
-      <Text style={headingStyles.subTitle}>14 items to be picked up</Text>
+      <Text style={headingStyles.subTitle}>
+        {getTotalItems()} items to be picked up
+      </Text>
       <FlatList
         style={{
           marginLeft: 20,
@@ -102,7 +110,7 @@ const ParcelList = ({
             }}
           />
         )}
-        keyExtractor={(item) => item.parcelTitle}
+        keyExtractor={(item) => item.id}
       />
     </SafeAreaView>
   );
