@@ -72,10 +72,10 @@ const CarrierParcelList = ({
   const [items, setItems] = useState<ItemType[]>([]);
 
   const [driverName, setDriverName] = useState<string>('');
-  const [licenseNumber, setLicenseNumber] = useState<string>('');
+  const [licensePlate, setLicensePlate] = useState<string>('');
 
   const [delivered, setDelivered] = useState<boolean>(false);
-  const [deliveryError, setDeliveryError] = useState<boolean>(false);
+  const [deliveryError, setDeliveryError] = useState<string | null>(null);
 
   const { params } = route;
 
@@ -97,26 +97,41 @@ const CarrierParcelList = ({
     const carrier = findCarrierFromDriverNameAndLicencePlate(
       carriers,
       driverName,
-      licenseNumber
+      licensePlate
     );
 
-    if (carrier) {
-      const updatedParcel = await updateParcelById(params.parcel.id, {
-        ...params.parcel,
-        deliveryInfo: {
-          carrierId: carrier.id,
-          status: DeliveryStatus.DELIVERED,
-        },
-      });
-      if (updatedParcel) {
-        setDelivered(true);
-      } else {
-        setDeliveryError(true);
-      }
+    if (!carrier) {
+      setDriverName('');
+      setLicensePlate('');
+      setModalVisible(false);
+      setDeliveryError('Carrier not found');
+      return;
+    }
+
+    if (carrier.id !== params.parcel.id) {
+      setDriverName('');
+      setLicensePlate('');
+      setDeliveryError('A different carrier is assigned to this parcel');
+      setModalVisible(false);
+      return;
+    }
+
+    const updatedParcel = await updateParcelById(params.parcel.id, {
+      ...params.parcel,
+      deliveryInfo: {
+        carrierId: carrier.id,
+        status: DeliveryStatus.DELIVERED,
+      },
+    });
+
+    if (updatedParcel) {
+      setDelivered(true);
     } else {
-      setDeliveryError(true);
+      setDeliveryError('Some information is wrong');
     }
     setModalVisible(false);
+    setDriverName('');
+    setLicensePlate('');
   };
 
   const navigateToParcelList = async () => {
@@ -133,7 +148,7 @@ const CarrierParcelList = ({
         parcelList: updatedParcelList,
       });
     } else {
-      setDeliveryError(true);
+      setDeliveryError('Some information is wrong');
     }
   };
 
@@ -202,9 +217,9 @@ const CarrierParcelList = ({
           />
           <CustomTextInput
             placeholder={'License Plate'}
-            value={licenseNumber}
+            value={licensePlate}
             onChangeValue={(name) => {
-              setLicenseNumber(name);
+              setLicensePlate(name);
             }}
           />
         </>
@@ -225,15 +240,17 @@ const CarrierParcelList = ({
 
       <Alert
         icon={<AntDesign name='warning' style={headerStyles.icon} />}
-        open={deliveryError}
+        open={!!deliveryError}
         onRequestClose={() => {
-          setDeliveryError(false);
+          setDeliveryError(null);
         }}
         buttonText={'BACK'}
         onButtonPress={() => {
-          setDeliveryError(false);
+          setDeliveryError(null);
         }}
-        description={'Some information is wrong'}
+        description={
+          deliveryError ? deliveryError : 'Some information is wrong'
+        }
       />
     </SafeAreaView>
   );

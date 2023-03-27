@@ -42,7 +42,6 @@ export const getParcelById = async (
   parcelId: string
 ): Promise<ParcelType | null> => {
   const stringifiedData = await AsyncStorage.getItem('@parcelsData');
-  console.log(stringifiedData);
   if (stringifiedData) {
     const allParcels: ParcelType[] = JSON.parse(stringifiedData);
 
