@@ -1,5 +1,5 @@
-const SPACINGS = {
-  small: 16,
-};
-
-export default SPACINGS;
+export enum SPACINGS {
+  xLarge = 48,
+  large = 20,
+  small = 16,
+}

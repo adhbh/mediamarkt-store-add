@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import COLORS from '../../../../utils/colors';
 import { ParcelListType } from '../../../../types/ParcelList';
+import { FONT_SIZE, FONT_WEIGHT } from '../../../../utils/fonts';
 
 interface PickupListItemPropType {
   item: ParcelListType;
@@ -17,7 +18,7 @@ export default function PickupListItem(props: PickupListItemPropType) {
 
   const getTotalCarriers = () => {
     return item.parcels.reduce((memo, item) => {
-      const carrierCount = item.carrierId ? 1 : 0;
+      const carrierCount = item.deliveryInfo.carrierId ? 1 : 0;
       return memo + carrierCount;
     }, 0);
   };
@@ -30,34 +31,19 @@ export default function PickupListItem(props: PickupListItemPropType) {
     >
       <View style={styles.container}>
         <View style={{ flex: 2 }}>
-          <Text
-            style={{ fontSize: 16, color: COLORS.darkGrey, fontWeight: '500' }}
-          >
+          <Text style={styles.parcelListSubHeading}>
             Parcel List {item.pickupDate}
           </Text>
-          <Text
-            style={{ fontSize: 10, fontWeight: '400', color: COLORS.darkGrey }}
-          >
+          <Text style={styles.carriersInfo}>
             {getTotalCarriers()} carriers will pick up the parcel on{' '}
             {item.pickupDate}
           </Text>
-          <Text
-            style={{ fontSize: 10, fontWeight: '400', color: COLORS.darkGrey }}
-          >
-            {item.parcels.length} Parcels containing {getTotalItems()} items.
+          <Text style={styles.parcelsInfo}>
+            {item.parcels.length} parcels containing {getTotalItems()} items
           </Text>
         </View>
-        <View
-          style={{
-            flex: 1,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'flex-end',
-          }}
-        >
-          <Text style={{ fontSize: 12, color: COLORS.red, fontWeight: '500' }}>
-            {item.pickupDate}
-          </Text>
+        <View style={styles.rightContainer}>
+          <Text style={styles.rightPickupDate}>{item.pickupDate}</Text>
         </View>
       </View>
     </Pressable>
@@ -69,5 +55,31 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
+  },
+  rightContainer: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  parcelListSubHeading: {
+    fontSize: FONT_SIZE.subHeading,
+    color: COLORS.darkGrey,
+    fontWeight: FONT_WEIGHT.heavy,
+  },
+  parcelsInfo: {
+    fontSize: FONT_SIZE.content,
+    fontWeight: FONT_WEIGHT.medium,
+    color: COLORS.darkGrey,
+  },
+  carriersInfo: {
+    fontSize: FONT_SIZE.content,
+    fontWeight: FONT_WEIGHT.medium,
+    color: COLORS.darkGrey,
+  },
+  rightPickupDate: {
+    fontSize: FONT_SIZE.highlight,
+    color: COLORS.red,
+    fontWeight: FONT_WEIGHT.heavy,
   },
 });

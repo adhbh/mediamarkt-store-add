@@ -31,11 +31,15 @@ import {
   useCarriersDispatch,
   useCarriersState,
 } from '../../contexts/CarriersContext';
+import { FONT_SIZE, FONT_WEIGHT } from '../../utils/fonts';
+import { SPACINGS } from '../../utils/spacings';
 
 type ParcelListsPropTypes = StackScreenProps<RootStackParamList, 'ParcelLists'>;
 
 export default function ParcelLists(props: ParcelListsPropTypes) {
   const { navigation } = props;
+
+  // State to save parcel lists grouped by pickup date
   const [parcelLists, setParcelLists] = useState<ParcelListType[]>([]);
 
   const isFocused = useIsFocused();
@@ -48,6 +52,7 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
 
   const carriers = useCarriersState();
 
+  // Refetch parcels from storage when this screen is focused
   useEffect(() => {
     const getDefaultData = async () => {
       const defaultParcelsData = await getParcelsData();
@@ -59,6 +64,7 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
     getDefaultData();
   }, [isFocused]);
 
+  // Refetch carriers from service when this screen is focused
   useEffect(() => {
     const getCarriersData = async () => {
       const carriers = await getCarriers();
@@ -68,17 +74,20 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
     getCarriersData();
   }, [isFocused]);
 
-  const onItemPressed = (parcelList: ParcelListType) => {
+  // Callback when a parcel list is tapped
+  const onParcelItemPressed = (parcelList: ParcelListType) => {
     navigation.navigate('ParcelList', {
       title: `Parcel List ${parcelList.pickupDate}`,
       parcelList,
     });
   };
 
-  const onScannerPressed = () => {
+  // Callback when scanner button is pressed
+  const onScannerButtonPressed = () => {
     navigation.navigate('Scanner');
   };
 
+  // Callback when user adds a new parcel, add parcel to storage
   const onAddNewParcel = async () => {
     const parcelData = await getParcelById(parcelId);
 
@@ -92,6 +101,7 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
     setModalVisible(false);
   };
 
+  // Carrier options to pass to CustomSelector component
   const carrierOptions = carriers.map((item) => ({
     id: item.id,
     value: `${item.companyName} (${item.id})`,
@@ -103,28 +113,19 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
         <FlatList
           data={parcelLists}
           renderItem={({ item }) => (
-            <PickupListItem onItemPressed={onItemPressed} item={item} />
+            <PickupListItem onItemPressed={onParcelItemPressed} item={item} />
           )}
           keyExtractor={(item) => item.pickupDate}
           showsVerticalScrollIndicator={false}
           ItemSeparatorComponent={() => <ListDivider />}
           ListHeaderComponent={() => (
-            <View style={{ marginBottom: 17, marginTop: 48 }}>
-              <Text style={{ fontSize: 24, fontWeight: '500' }}>
-                Parcel lists
-              </Text>
+            <View style={styles.listHeaderContainer}>
+              <Text style={styles.listHeading}>Parcel lists</Text>
             </View>
           )}
         />
       </View>
-      <View
-        style={{
-          height: 100,
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'row',
-        }}
-      >
+      <View style={styles.footerContainer}>
         <Pressable
           style={{
             position: 'absolute',
@@ -147,7 +148,7 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
             position: 'absolute',
             right: 26,
           }}
-          onPress={onScannerPressed}
+          onPress={onScannerButtonPressed}
         >
           <MaterialCommunityIcons
             name='barcode-scan'
@@ -191,7 +192,22 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
   },
-  listContainer: { flex: 1, marginLeft: 20, marginRight: 20 },
+  listContainer: {
+    flex: 1,
+    marginLeft: SPACINGS.large,
+    marginRight: SPACINGS.large,
+  },
+  listHeaderContainer: {
+    marginBottom: SPACINGS.small,
+    marginTop: SPACINGS.xLarge,
+  },
+  listHeading: { fontSize: FONT_SIZE.heading, fontWeight: FONT_WEIGHT.heavy },
+  footerContainer: {
+    height: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
 });
