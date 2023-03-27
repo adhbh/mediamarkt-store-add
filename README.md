@@ -31,7 +31,22 @@ $ yarn start
 
 #### Add new parcels by entering the parcel id and carrier id manually.
 
-#### There can only be one carrier assigned to a parcel
+- User can click the "+" button to enter new parcel id manually
+
+![alt text](https://i.postimg.cc/T3rygnhq/Screenshot-2023-03-28-at-00-20-07.png)
+
+- An easy interface that lets user choose from list of Carriers. So he does not need to remember Carrier Ids.
+
+![alt text](https://i.postimg.cc/q7qzYSjQ/Screenshot-2023-03-28-at-00-25-45.png)
+
+#### Validations
+
+- Parcel that does not exist in the system can not be added.
+
+- There can only be one carrier assigned to a parcel. If Parcel is already added and assigned to a carrier, then it can not be added again.
+
+![alt text](https://i.postimg.cc/KvYSnbz9/Screenshot-2023-03-28-at-00-29-11.png)
+
 
 ### 2. Add Parcel using Barcode
 
@@ -41,18 +56,34 @@ $ yarn start
 
 #### Show the full list of available parcels grouped by pickup date
 
-#### Show the parcel and items details inside of parcel lists
+- User can view the full list of parcels lists grouped and sorted by pickup date
 
-### 4. Show Parcels Lists
+- User can click on a list to view all the parcels for a particular date
 
-#### Show the full list of available parcels grouped by pickup date
+![alt text](https://i.postimg.cc/kX7gWp6j/Screenshot-2023-03-28-at-00-33-53.png)
 
-#### Show the parcel and items details inside of each parcel list
+### 4. Parcel Handover
 
-### 5. Parcel Handover
+#### Handover with the entry of the driver's name and its license plate
 
-#### Handover with the entry of the driver's name and its license plate.
+- At time of delivery, user can select a Parcel to view item details
 
-#### Validate if the supplied carrier exists
+- User can click on Deliver button to initiate handover to Carrier
 
-#### Validate if the correct carrier is picking up the parcel
+- User has to manually add Driver's Name and License Plate to handover the courier
+
+![alt text](https://i.postimg.cc/fLx0RSpk/Screenshot-2023-03-28-at-00-41-40.png)
+
+- After parcel is handed over, user can go back to the parcel list to see the updated delivery status
+
+![alt text](https://i.postimg.cc/bvvhv75n/Screenshot-2023-03-28-at-00-48-25.png)
+
+
+#### Validations
+
+- User sees the error if Carrier doesn't exist with the provider driver name and license plate.
+
+- User sees the error if Carrier was assigned to a different Carrier, but user provided a a different name and license plate.
+
+![alt text](https://i.postimg.cc/7PnmB5hx/Screenshot-2023-03-28-at-00-51-59.png)
+
