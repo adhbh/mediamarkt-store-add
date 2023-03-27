@@ -25,79 +25,12 @@ import { getParcelById } from '../../service/parcels/index';
 import { useIsFocused } from '@react-navigation/native';
 import ListDivider from '../../shared/ListDivider/index';
 import { parcelsDataToParcelLists } from '../../utils/dataTranform';
-
-const COURIER_DATA = [
-  {
-    id: { $oid: 'het32r0g0u78' },
-    companyName: 'Seur',
-    driver: 'Manfred Steger',
-    licensePlate: '3859fyh',
-    centerAdress: 'St. Cal Patrici, 2, Barcelona',
-  },
-  {
-    id: { $oid: 'het32gb78b6q' },
-    companyName: 'MWR',
-    driver: 'Anna-maria Tompion',
-    licensePlate: '5780hqa',
-    centerAdress: 'St. Paris, 158, Barcelona',
-  },
-  {
-    id: { $oid: 'het32r0g36g9' },
-    companyName: 'Seur',
-    driver: 'Suellen Sandifer',
-    licensePlate: '1008dcl',
-    centerAdress: 'St. Cal Patrici, 2, Barcelona',
-  },
-  {
-    id: { $oid: 'het32bf618ka' },
-    companyName: 'DHL',
-    driver: 'Demetra Luckman',
-    licensePlate: '9255jvz',
-    centerAdress: 'St. Estany de la Messeguera, 14, Barcelona',
-  },
-  {
-    id: { $oid: 'het32bff15sm' },
-    companyName: 'DHL',
-    driver: 'Judd Beekman',
-    licensePlate: '2349fia',
-    centerAdress: 'St. Estany de la Messeguera, 14, Barcelona',
-  },
-  {
-    id: { $oid: 'het32yw1747f' },
-    companyName: 'Correos',
-    driver: 'Charlean Booker',
-    licensePlate: '3821has',
-    centerAdress: 'St. Numero 29, 12, Barcelona',
-  },
-  {
-    id: { $oid: 'het32gb7yh18' },
-    companyName: 'MWR',
-    driver: 'Stevana Hassan',
-    licensePlate: '7711gus',
-    centerAdress: 'St. Paris, 158, Barcelona',
-  },
-  {
-    id: { $oid: 'het32r0gr6na' },
-    companyName: 'Seur',
-    driver: 'Gearard Dilke',
-    licensePlate: '4601kme',
-    centerAdress: 'St. Cal Patrici, 2, Barcelona',
-  },
-  {
-    id: { $oid: 'het32yw174i5' },
-    companyName: 'Correos',
-    driver: 'Elaina Molyneaux',
-    licensePlate: '8928jab',
-    centerAdress: 'St. Numero 29, 12, Barcelona',
-  },
-  {
-    id: { $oid: 'het32gb78j6v' },
-    companyName: 'MWR',
-    driver: 'Jecho Tatlock',
-    licensePlate: '1072mbn',
-    centerAdress: 'St. Paris, 158, Barcelona',
-  },
-];
+import { getCarriers } from '../../service/carriers/index';
+import {
+  CarriersActions,
+  useCarriersDispatch,
+  useCarriersState,
+} from '../../contexts/CarriersContext';
 
 type ParcelListsPropTypes = StackScreenProps<RootStackParamList, 'ParcelLists'>;
 
@@ -111,6 +44,10 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
   const [parcelId, setParcelId] = useState<string>('');
   const [carrierId, setCarrierId] = useState<string>('');
 
+  const dispatchCarriers = useCarriersDispatch();
+
+  const carriers = useCarriersState();
+
   useEffect(() => {
     const getDefaultData = async () => {
       const defaultParcelsData = await getParcelsData();
@@ -120,6 +57,15 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
       }
     };
     getDefaultData();
+  }, [isFocused]);
+
+  useEffect(() => {
+    const getCarriersData = async () => {
+      const carriers = await getCarriers();
+      dispatchCarriers({ type: CarriersActions.SET_CARRIERS, data: carriers });
+    };
+
+    getCarriersData();
   }, [isFocused]);
 
   const onItemPressed = (parcelList: ParcelListType) => {
@@ -146,9 +92,9 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
     setModalVisible(false);
   };
 
-  const data = COURIER_DATA.map((item) => ({
-    id: item.id.$oid,
-    value: `${item.companyName} (${item.id.$oid})`,
+  const carrierOptions = carriers.map((item) => ({
+    id: item.id,
+    value: `${item.companyName} (${item.id})`,
   }));
 
   return (
@@ -230,7 +176,7 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
           />
           <CustomSelector
             placeholder={'Carrier ID'}
-            options={data}
+            options={carrierOptions}
             onSelectItem={(item) => {
               setCarrierId(item.id);
             }}

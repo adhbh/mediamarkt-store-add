@@ -8,6 +8,7 @@ import { RootStackParamList } from './types/RootStackParamList';
 import { useEffect } from 'react';
 import CarrierParcelList from './app/carrier-parcel-list';
 import { storeDefaultData } from './storage/ParcelsStorage/index';
+import { CarriersProvider } from './contexts/CarriersContext';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -17,24 +18,29 @@ export default function App() {
   }, []);
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-          contentStyle: {
-            backgroundColor: '#fff',
-          },
-        }}
-      >
-        <Stack.Screen name='ParcelLists' component={ParcelLists} />
-        <Stack.Screen
-          name='ParcelList'
-          component={ParcelList}
-          initialParams={{ title: '' }}
-        />
-        <Stack.Screen name='Scanner' component={BarcodeScanner} />
-        <Stack.Screen name='CarrierParcelList' component={CarrierParcelList} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <CarriersProvider>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+            contentStyle: {
+              backgroundColor: '#fff',
+            },
+          }}
+        >
+          <Stack.Screen name='ParcelLists' component={ParcelLists} />
+          <Stack.Screen
+            name='ParcelList'
+            component={ParcelList}
+            initialParams={{ title: '' }}
+          />
+          <Stack.Screen name='Scanner' component={BarcodeScanner} />
+          <Stack.Screen
+            name='CarrierParcelList'
+            component={CarrierParcelList}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </CarriersProvider>
   );
 }
