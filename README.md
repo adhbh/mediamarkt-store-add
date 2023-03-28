@@ -195,8 +195,11 @@ Due to time constraints, I didn't get time to build backend service for this app
 Carriers data is fetched using "fake" service layer on the Parcel Lists screen. But I realised that this data is required in Parcel Lists screen, Parcel Detail screen, Carrier Parcel List screen and also in several child components like list items. Hence, it made sense to use React's [Context API](https://legacy.reactjs.org/docs/context.html) to pass data through the component tree.
 
 Hence I created:
-a. [ContextProvider](https://github.com/adhbh/mediamarkt-store-add/blob/main/contexts/CarriersContext.tsx#L47): and [wrapped](https://github.com/adhbh/mediamarkt-store-add/blob/main/App.tsx#L21) full app with it so that every component has access to
+
+a. [ContextProvider](https://github.com/adhbh/mediamarkt-store-add/blob/main/contexts/CarriersContext.tsx#L47): and [wrapped](https://github.com/adhbh/mediamarkt-store-add/blob/main/App.tsx#L21) full app with it so that every component has access to Carrier data.
+
 b. useCarriersState: which is used inside many components to get latest Carriers state.
+
 c. useCarriersDispatch: which is used inside [Parcel Lists](https://github.com/adhbh/mediamarkt-store-add/blob/main/app/parcel-lists/index.tsx#L78) screen to update Carriers state.
 
 ### 8. Typescript interfaces
