@@ -105,3 +105,31 @@ $ yarn start
 
 ![alt text](https://i.postimg.cc/7PnmB5hx/Screenshot-2023-03-28-at-00-51-59.png)
 
+## Technical Documentation
+
+### 1. Folder Structure
+
+- `./app`: Folder contains all the Screens
+- `./App.tsx`: Start file of the app, it contains the Screen routes
+- `./service`: Placeholder for service layer. This is where all the api request handlers will go. Currently, it contains mock APIs
+- `./shared`: Components that are shared across screens
+- `./storage`: Persistent storage for the App powered by AsyncStorage
+- `./types`: Shared Typescript interfaces
+- `./contexts`: React contexts
+
+### 2. Routing
+
+Project uses [React Navigation](https://reactnavigation.org/) for navigating between Screens. All the screens can be found in [App.tsx](https://github.com/adhbh/mediamarkt-store-add/blob/main/App.tsx#L31).
+
+### 3. Persistent Storage Strategy
+
+Project uses [Async Storage](https://react-native-async-storage.github.io/async-storage/docs/usage/) as persistent storage to save Parcel to Carrier mapping. I strongly believe that this must be also persisted to backend but I didnt implement it because of shortage of time.
+
+### 4. Assets
+
+Project uses [Expo Vector Icons](https://icons.expo.fyi/) for icons and images.
+
+### 5. Linting and formating
+
+Project uses esLint and Prettier for code formating.
+
