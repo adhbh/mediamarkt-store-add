@@ -9,13 +9,14 @@ Email: adheeshbhatia@gmail.com
 #### Prerequisites
 Install [Expo Go](https://expo.dev/client) app on Android phone. Note that the app has been tested on Android on actual device and on IOS simulator. Hence, some features like Barcode Scanner might not work on IOS.
 
-#### Installation and running demo
+#### Installation and running demo locally
 
 1. Clone the repository
 ```bash
 $ git clone git@github.com:adhbh/mediamarkt-store-add.git
 ```
 2. Install dependencies
+3. 
 ```bash
 $ yarn install
 ```
@@ -24,6 +25,16 @@ $ yarn install
 $ yarn start
 ```
 4. QR code will display in terminal. Scan the displayed QR code using Expo Go app
+
+#### Installation using Demo apk
+
+Note: The apk is old but has all the features as listed below. I was not able to generate another build using Expo EAS because of quota limit. However, you can still test it using this build because it covers all the User Stories mentioned below.
+
+1. [Download apk](https://drive.google.com/file/d/1R0UoPgghhzGWv_9P27LaRhIreMaL_C5I/view?usp=sharing)
+
+2. Install on Android Device
+
+3. Open `ts-expo-skeleton` app installed on your device.
 
 ## User stories
 
