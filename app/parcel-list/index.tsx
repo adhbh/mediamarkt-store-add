@@ -16,6 +16,7 @@ import { DeliveryStatus, ParcelType } from '../../types/ParcelList';
 import ListDivider from '../../shared/ListDivider/index';
 import { useCarriersState } from '../../contexts/CarriersContext';
 import { findCarrierById } from '../../utils/dataTranform';
+import COLORS from '../../utils/colors';
 
 interface ItemProps {
   parcel: ParcelType;
@@ -113,10 +114,7 @@ const ParcelList = ({
         {getTotalItems()} items to be picked up
       </Text>
       <FlatList
-        style={{
-          marginLeft: 20,
-          marginRight: 20,
-        }}
+        style={listStyles.listContainer}
         data={parcels}
         renderItem={({ item: parcel }) => (
           <Item parcel={parcel} onPressButton={onItemPress} />
@@ -131,7 +129,7 @@ const ParcelList = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
   },
 });
 

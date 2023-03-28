@@ -79,11 +79,11 @@ export default function BarcodeScanner({ navigation }: ScannerPropTypes) {
   }));
 
   const onAddNewParcel = async () => {
-    if(!carrierId) {
+    if (!carrierId) {
       setCarrierId('');
       setParcel(null);
       setScanned(false);
-      setCourierAdditionBottomSheet(false)
+      setCourierAdditionBottomSheet(false);
       setParcelScanError('Carrier Id not provided');
       return;
     }

@@ -29,6 +29,10 @@ export const headingStyles = StyleSheet.create({
 });
 
 export const listStyles = StyleSheet.create({
+  listContainer: {
+    marginLeft: SPACINGS.large,
+    marginRight: SPACINGS.large,
+  },
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',

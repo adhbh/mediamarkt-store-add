@@ -9,8 +9,11 @@ interface BottomSheetPropTypes {
   title: string;
   buttonTitle: string;
 }
-export default function BottomSheet(props: React.PropsWithChildren<BottomSheetPropTypes>) {
-  const { open, onRequestClose, onButtonPress, title, buttonTitle, children } = props;
+export default function BottomSheet(
+  props: React.PropsWithChildren<BottomSheetPropTypes>
+) {
+  const { open, onRequestClose, onButtonPress, title, buttonTitle, children } =
+    props;
 
   return (
     <>

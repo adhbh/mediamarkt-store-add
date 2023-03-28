@@ -3,7 +3,6 @@ import {
   Image,
   Pressable,
   SafeAreaView,
-  StyleSheet,
   Text,
   View,
 } from 'react-native';
@@ -32,9 +31,8 @@ import {
   useCarriersDispatch,
   useCarriersState,
 } from '../../contexts/CarriersContext';
-import { FONT_SIZE, FONT_WEIGHT } from '../../utils/fonts';
-import { SPACINGS } from '../../utils/spacings';
 import Alert from '../../shared/Alert/index';
+import { containerStyles, listStyles } from './styles';
 
 type ParcelListsPropTypes = StackScreenProps<RootStackParamList, 'ParcelLists'>;
 
@@ -97,8 +95,8 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
 
   // Callback when user adds a new parcel, add parcel to storage
   const onAddNewParcel = async () => {
-
-    if(!carrierId) {
+    // Validate for Carrier id to exist
+    if (!carrierId) {
       setCarrierId('');
       setParcelId('');
       setModalVisible(false);
@@ -106,6 +104,7 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
       return;
     }
 
+    // Validate if Parcel is already added
     const parcelFromStorage = await getParcelById(parcelId);
     if (parcelFromStorage !== null) {
       setCarrierId('');
@@ -115,8 +114,10 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
       return;
     }
 
+    // Get Parcel data from api
     const parcelData = await getParcelByIdApi(parcelId);
 
+    // Validate if Parcel id is available
     if (parcelData !== null) {
       const updatedParcelsData = await addToParcelsData(parcelData, carrierId);
       if (updatedParcelsData) {
@@ -145,8 +146,8 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
   }));
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.listContainer}>
+    <SafeAreaView style={containerStyles.container}>
+      <View style={listStyles.listContainer}>
         <FlatList
           data={parcelLists}
           renderItem={({ item }) => (
@@ -156,13 +157,13 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
           showsVerticalScrollIndicator={false}
           ItemSeparatorComponent={() => <ListDivider />}
           ListHeaderComponent={() => (
-            <View style={styles.listHeaderContainer}>
-              <Text style={styles.listHeading}>Parcel Lists</Text>
+            <View style={listStyles.listHeaderContainer}>
+              <Text style={listStyles.listHeading}>Parcel Lists</Text>
             </View>
           )}
         />
       </View>
-      <View style={styles.footerContainer}>
+      <View style={containerStyles.footerContainer}>
         <Pressable
           style={{
             position: 'absolute',
@@ -226,7 +227,7 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
       </BottomSheet>
 
       <Alert
-        icon={<AntDesign name='warning' style={styles.icon} />}
+        icon={<AntDesign name='warning' style={listStyles.icon} />}
         open={!!addParcelError}
         onRequestClose={() => {
           setAddParcelError(null);
@@ -240,31 +241,3 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-  },
-  listContainer: {
-    flex: 1,
-    marginLeft: SPACINGS.large,
-    marginRight: SPACINGS.large,
-  },
-  listHeaderContainer: {
-    marginBottom: SPACINGS.small,
-    marginTop: SPACINGS.xLarge,
-  },
-  listHeading: { fontSize: FONT_SIZE.heading, fontWeight: FONT_WEIGHT.heavy },
-  footerContainer: {
-    height: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  icon: {
-    fontSize: 48,
-    color: COLORS.red,
-    marginBottom: SPACINGS.large,
-  },
-});
