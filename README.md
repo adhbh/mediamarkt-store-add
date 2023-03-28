@@ -82,6 +82,19 @@ Note: The apk is old but has all the features as listed below. I was not able to
 
 - All other validations of manual user story like also exist here
 
+#### Sample Barcodes for testing
+
+![alt text](https://i.postimg.cc/pL7MRzyH/Screenshot-2023-03-27-at-23-55-10.png)
+
+
+![alt text](https://i.postimg.cc/CKqT15ff/Screenshot-2023-03-27-at-23-55-37.png)
+
+
+![alt text](https://i.postimg.cc/G2FWFfKL/Screenshot-2023-03-27-at-23-55-54.png)
+
+
+![alt text](https://i.postimg.cc/pTMNnvDc/Screenshot-2023-03-27-at-23-56-12.png)
+
 
 ### 3. Show Parcels Lists
 
