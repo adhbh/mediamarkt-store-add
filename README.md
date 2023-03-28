@@ -47,6 +47,8 @@ $ yarn start
 
 ![alt text](https://i.postimg.cc/KvYSnbz9/Screenshot-2023-03-28-at-00-29-11.png)
 
+- Carrier Id has to be selected, otherwise user sees the error.
+
 
 ### 2. Add Parcel using Barcode
 
@@ -95,6 +97,10 @@ $ yarn start
 - After parcel is handed over, user can go back to the parcel list to see the updated delivery status
 
 ![alt text](https://i.postimg.cc/bvvhv75n/Screenshot-2023-03-28-at-00-48-25.png)
+
+- If parcel is already handed over, user can not handover the same parcel again
+
+![alt text](https://i.postimg.cc/GpS4KwTP/Screenshot-2023-03-28-at-03-06-56.png)
 
 
 #### Validations
