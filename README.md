@@ -52,6 +52,24 @@ $ yarn start
 
 #### Add new parcels by scanning the parcel barcode
 
+- User can click on "Scan" button to open barcode scanner and scan a parcel label.
+
+![alt text](https://i.postimg.cc/jSRkhztQ/Screenshot-2023-03-28-at-01-55-00.png)
+
+- User can select the Carrier and add the parcel to the Parcels lists.
+
+![alt text](https://i.postimg.cc/SsKh1B4d/Screenshot-2023-03-28-at-02-05-00.png)
+
+
+#### Validations
+
+- Only parcel ids can be scanned. If user scans some other barcode, then he sees error.
+
+![alt text](https://i.postimg.cc/MKHnfLjy/Screenshot-2023-03-28-at-01-58-29.png)
+
+- All other validations of manual user story like also exist here
+
+
 ### 3. Show Parcels Lists
 
 #### Show the full list of available parcels grouped by pickup date
