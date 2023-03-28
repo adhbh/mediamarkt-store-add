@@ -33,6 +33,7 @@ import {
 } from '../../contexts/CarriersContext';
 import Alert from '../../shared/Alert/index';
 import { containerStyles, listStyles } from './styles';
+import { SPACINGS } from '../../utils/spacings';
 
 type ParcelListsPropTypes = StackScreenProps<RootStackParamList, 'ParcelLists'>;
 
@@ -211,7 +212,7 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
         <>
           <CustomTextInput
             placeholder={'ID'}
-            containerStyles={{ marginBottom: 10 }}
+            containerStyles={{ marginBottom: SPACINGS.large }}
             value={parcelId}
             onChangeValue={setParcelId}
           />
