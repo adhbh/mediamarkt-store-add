@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import {
   View,
-  StyleSheet,
   TextInput,
   Text,
   Animated,
@@ -10,7 +9,8 @@ import {
   Modal,
   FlatList,
 } from 'react-native';
-import COLORS from '../../utils/colors';
+import ListDivider from '../ListDivider/index';
+import { styles } from './styles';
 
 interface SelectionOption {
   id: string;
@@ -135,17 +135,7 @@ const CustomSelector = (props: CustomSelectorPropTypes) => {
                   </Pressable>
                 );
               }}
-              ItemSeparatorComponent={() => (
-                <View
-                  style={{
-                    borderBottomWidth: 1,
-                    borderBottomColor: COLORS.lightGrey,
-                    paddingBottom: 10,
-                    marginTop: 6,
-                    marginBottom: 6,
-                  }}
-                />
-              )}
+              ItemSeparatorComponent={() => <ListDivider />}
             />
           </View>
         </View>
@@ -154,72 +144,3 @@ const CustomSelector = (props: CustomSelectorPropTypes) => {
   );
 };
 export default CustomSelector;
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: COLORS.white,
-    paddingTop: 5,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: COLORS.lightGrey,
-    borderRadius: 10,
-    width: '100%',
-    justifyContent: 'center',
-    height: 56,
-  },
-  icon: {
-    width: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  input: {
-    fontSize: 16,
-    height: 24,
-    color: COLORS.darkGrey,
-  },
-  label: {
-    color: COLORS.darkGrey,
-    fontSize: 14,
-  },
-  animatedStyle: {
-    position: 'absolute',
-    borderRadius: 90,
-    zIndex: 10000,
-    backgroundColor: COLORS.white,
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    marginTop: 22,
-    width: '100%',
-  },
-  modalView: {
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 20,
-    width: '100%',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-    height: 300,
-  },
-  selectionItem: {
-    padding: 10,
-    width: '100%',
-    alignItems: 'center',
-  },
-  listContainer: {
-    width: '100%',
-  },
-  listItemText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: COLORS.darkGrey,
-  },
-});

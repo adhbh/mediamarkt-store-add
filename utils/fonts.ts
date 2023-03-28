@@ -3,6 +3,7 @@ export enum FONT_SIZE {
   subHeading = 16,
   content = 10,
   highlight = 12,
+  modalHeading = 20,
 }
 
 export enum FONT_WEIGHT {

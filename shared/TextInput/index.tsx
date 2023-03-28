@@ -1,13 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  Animated,
-  Pressable,
-  ViewStyle,
-} from 'react-native';
-import COLORS from '../../utils/colors';
+import { View, TextInput, Animated, Pressable, ViewStyle } from 'react-native';
+import { styles } from './styles';
 
 interface CustomTextInputPropTypes {
   containerStyles?: ViewStyle;
@@ -104,39 +97,3 @@ const CustomTextInput = (props: CustomTextInputPropTypes) => {
   );
 };
 export default CustomTextInput;
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: COLORS.white,
-    paddingTop: 5,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: COLORS.lightGrey,
-    borderRadius: 10,
-    width: '100%',
-    justifyContent: 'center',
-    height: 56,
-  },
-  icon: {
-    width: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  input: {
-    fontSize: 16,
-    height: 24,
-    color: COLORS.darkGrey,
-  },
-  label: {
-    color: COLORS.darkGrey,
-    fontSize: 14,
-  },
-  animatedStyle: {
-    top: 15,
-    left: 15,
-    position: 'absolute',
-    borderRadius: 90,
-    zIndex: 10000,
-    backgroundColor: COLORS.white,
-  },
-});
