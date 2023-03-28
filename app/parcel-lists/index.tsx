@@ -98,6 +98,14 @@ export default function ParcelLists(props: ParcelListsPropTypes) {
   // Callback when user adds a new parcel, add parcel to storage
   const onAddNewParcel = async () => {
 
+    if(!carrierId) {
+      setCarrierId('');
+      setParcelId('');
+      setModalVisible(false);
+      setAddParcelError('Carrier Id not provided');
+      return;
+    }
+
     const parcelFromStorage = await getParcelById(parcelId);
     if (parcelFromStorage !== null) {
       setCarrierId('');
