@@ -1,4 +1,4 @@
-# Medimark Store App
+# Medimarkt Store App
 
 Submited by: Adheesh Bhatia
 
