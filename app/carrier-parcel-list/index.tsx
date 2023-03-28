@@ -189,7 +189,17 @@ const CarrierParcelList = ({
           onPress={() => {
             setModalVisible(true);
           }}
-          style={footerStyles.buttonContainer}
+          style={
+            params.parcel.deliveryInfo.status === DeliveryStatus.DELIVERED
+              ? [
+                  footerStyles.buttonContainer,
+                  footerStyles.buttonContainerDisabled,
+                ]
+              : footerStyles.buttonContainer
+          }
+          disabled={
+            params.parcel.deliveryInfo.status === DeliveryStatus.DELIVERED
+          }
         >
           <Text style={footerStyles.buttonText}>DELIVERY</Text>
         </Pressable>

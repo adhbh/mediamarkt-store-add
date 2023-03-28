@@ -39,7 +39,7 @@ export const listStyles = StyleSheet.create({
   icon: {
     padding: 15,
     backgroundColor: 'rgba(223, 0, 0, 0.1)',
-    borderRadius: 10,
+    borderRadius: SPACINGS.small,
     fontSize: 24,
     color: COLORS.red,
     marginRight: SPACINGS.small,
@@ -52,19 +52,20 @@ export const listStyles = StyleSheet.create({
   content: {
     fontSize: 10,
     fontWeight: '400',
-    color: 'rgba(58, 53, 65, 0.87)',
+    color: COLORS.darkGrey,
   },
-  rightSection: { color: '#DF0000', fontWeight: '500', fontSize: 10 },
 });
 
 export const footerStyles = StyleSheet.create({
   buttonContainer: {
     width: '100%',
-    backgroundColor: '#DF0000',
+    backgroundColor: COLORS.red,
     alignItems: 'center',
-    padding: 20,
-    boxShadow: '0px 4px 8px -4px rgba(58, 53, 65, 0.42)',
-    borderRadius: 5,
+    padding: SPACINGS.large,
+    borderRadius: SPACINGS.small,
+  },
+  buttonContainerDisabled: {
+    backgroundColor: COLORS.darkGrey,
   },
   buttonText: {
     color: 'white',
