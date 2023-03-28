@@ -140,7 +140,9 @@ Project uses [React Navigation](https://reactnavigation.org/) for navigating bet
 
 ### 3. Persistent Storage Strategy
 
-Project uses [Async Storage](https://react-native-async-storage.github.io/async-storage/docs/usage/) as persistent storage to save Parcel to Carrier mapping. I strongly believe that this must be also persisted to backend but I didnt implement it because of shortage of time.
+Project uses [Async Storage](https://react-native-async-storage.github.io/async-storage/docs/usage/) as persistent storage to save Parcel to Carrier mapping.
+
+I strongly believe that this must be also persisted to backend but I didnt implement it because of shortage of time.
 
 ### 4. Assets
 
@@ -189,4 +191,13 @@ c. useCarriersDispatch: which is used inside [Parcel Lists](https://github.com/a
 There are [shared interfaces](https://github.com/adhbh/mediamarkt-store-add/tree/main/types) which are in `./types` folder. Component prop types are defined within the component files itself. Most of the code in the project has type definitions and type checking, including for [react navigation stack](https://github.com/adhbh/mediamarkt-store-add/blob/main/types/RootStackParamList.ts).
 
 
+## Improvements and missing pieces
 
+Following are the things I couldn't do due to time constraints, but can be added in next versions:
+
+1. Driver's signature
+2. Parcel Lists screen when no Parcel is added
+3. Better design for Scan button and Scanner camera
+4. Validations code can be refactored and added to `./utils`
+5. Stepper component to show Delivery Progress
+6. Backend service implementation for persisting Carrier to Parcel mapping
