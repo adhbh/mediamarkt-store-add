@@ -16,7 +16,7 @@ Install [Expo Go](https://expo.dev/client) app on Android phone. Note that the a
 $ git clone git@github.com:adhbh/mediamarkt-store-add.git
 ```
 2. Install dependencies
-3. 
+3.
 ```bash
 $ yarn install
 ```
@@ -149,4 +149,44 @@ Project uses [Expo Vector Icons](https://icons.expo.fyi/) for icons and images.
 ### 5. Linting and formating
 
 Project uses esLint and Prettier for code formating.
+
+```bash
+$ yarn run format
+```
+
+
+### 6. Shared Components and Styles
+
+I have tried to build my own design system for this app and avoided using third-party components.
+
+Following shared components are used across different Screens:
+
+[Alert](https://github.com/adhbh/mediamarkt-store-add/tree/main/shared/Alert): It is used in all screens to show validation errors and success notifications.
+
+[CustomTextInput](https://github.com/adhbh/mediamarkt-store-add/tree/main/shared/TextInput): This is a styled TextInput component with cool animation inspired by Material UI.
+
+[Selector](https://github.com/adhbh/mediamarkt-store-add/tree/main/shared/Selector): Dropdown and Picker components sucks for mobile phones. Hence, I designed my own Selector component. It has mobile-first design and is super user friendly. It has similar animation as CustomTextInput
+
+[BottomSheet](https://github.com/adhbh/mediamarkt-store-add/tree/main/shared/BottomSheet): It is fully customizable BottomSheet component which can be used across screens to take user inputs.
+
+[ListDivider](https://github.com/adhbh/mediamarkt-store-add/tree/main/shared/ListDivider) and Backdrop(https://github.com/adhbh/mediamarkt-store-add/tree/main/shared/Backdrop) are other shared components.
+
+### 6. "Fake" Service Layer
+
+Due to time constraints, I didn't get time to build backend service for this app. Hence, I have mocked the provided JSON data in `./service` folder.
+
+### 7. Carriers Context
+
+Carriers data is fetched using "fake" service layer on the Parcel Lists screen. But I realised that this data is required in Parcel Lists screen, Parcel Detail screen, Carrier Parcel List screen and also in several child components like list items. Hence, it made sense to use React's [Context API](https://legacy.reactjs.org/docs/context.html) to pass data through the component tree.
+
+Hence I created:
+a. [ContextProvider](https://github.com/adhbh/mediamarkt-store-add/blob/main/contexts/CarriersContext.tsx#L47): and [wrapped](https://github.com/adhbh/mediamarkt-store-add/blob/main/App.tsx#L21) full app with it so that every component has access to
+b. useCarriersState: which is used inside many components to get latest Carriers state.
+c. useCarriersDispatch: which is used inside [Parcel Lists](https://github.com/adhbh/mediamarkt-store-add/blob/main/app/parcel-lists/index.tsx#L78) screen to update Carriers state.
+
+### 8. Typescript interfaces
+
+There are [shared interfaces](https://github.com/adhbh/mediamarkt-store-add/tree/main/types) which are in `./types` folder. Component prop types are defined within the component files itself. Most of the code in the project has type definitions and type checking, including for [react navigation stack](https://github.com/adhbh/mediamarkt-store-add/blob/main/types/RootStackParamList.ts).
+
+
 
